@@ -45,14 +45,15 @@
 
 
 
+
+
+                    @foreach($verticals as $vertical)
+                    @foreach($topics as $topic)
                     <?php
                     $region_score = 0;
                     $region_total = 0;
                     $count = 0;
                     ?>
-
-                    @foreach($verticals as $vertical)
-                    @foreach($topics as $topic)
                     @foreach($cities as $city)
                     @if($city->region_id == $region->id)
 
