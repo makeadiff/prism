@@ -35,6 +35,15 @@ h2.sub-title
     font-size: 300%;
 }
 
+h3.sub-title
+{
+    font-family: 'Oswald',sans-serif;
+    color:#ffffff;
+    text-transform: uppercase;
+
+
+}
+
 h4.sub-title
 {
     font-family: 'Oswald',sans-serif;

@@ -18,6 +18,12 @@
         <div class="row">
             <a href='report' class='btn btn-primary btn-lg transparent'>Report</a>
         </div>
+
+        <br>
+
+        <div class="row">
+            <a href='score' class='btn btn-primary btn-lg transparent'>Scores</a>
+        </div>
     </div>
 </div>
 @stop

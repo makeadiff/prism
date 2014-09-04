@@ -18,6 +18,18 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-12">
 
+            @if($errors->count()>0)
+
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+
+
+                <strong>Error</strong> : All questions are required<br>
+
+
+            </div>
+            @endif
+
             <form id="review-user" method="post" enctype="multipart/form-data" action="{{{action('Review@saveReview')}}}">
                 @foreach($topics as $topic)
                     <p class="topic">{{{$topic->subject}}}</p>
@@ -35,7 +47,8 @@
                     <br><br>
                 @endforeach
                 <input type="hidden" name="user" value="{{{Input::get('user')}}}">
-                <button type="submit" class="btn btn-default">Save</button>
+                <a href={{{URL::to('/review')}}} class="btn btn-default">Cancel</a>
+                <button type="submit" class="btn btn-primary"><strong>&nbsp;Save&nbsp;</strong></button>
             </form>
 
         </div>

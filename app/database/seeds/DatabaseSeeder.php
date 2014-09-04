@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder {
         Question::truncate();
         Answer::truncate();
         DB::table('prism_answer_user')->delete();
+        DB::table('prism_reviewer_user')->delete();
 
 
         $topic = new Topic;
@@ -173,7 +174,7 @@ class DatabaseSeeder extends Seeder {
         $answer->question()->associate($question);
         $answer->save();
 
-        $user = User::find(1);
+/*        $user = User::find(1);
         $answer = Answer::find(1);
         $user->answer()->attach($answer);
 
@@ -192,7 +193,7 @@ class DatabaseSeeder extends Seeder {
         $user->answer()->attach($answer);
 
         $reviewer = Reviewer::find(6);
-        $reviewer->user()->attach($user);
+        $reviewer->user()->attach($user);*/
 
 
 

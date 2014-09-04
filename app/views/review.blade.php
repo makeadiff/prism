@@ -49,6 +49,7 @@
                     <th style="text-decoration:underline">Region</th>
                     <th style="text-decoration:underline">Profile</th>
                     <th style="text-decoration:underline">Status</th>
+                    <th style="text-decoration:underline">Reviewed By</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -63,12 +64,13 @@
                             @endforeach
                         </td>
                         <td>{{{$user->status}}}</td>
+                        <td>{{{$user->reviewer}}}</td>
                     </tr>
                 @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="5">
+                        <td colspan="6">
                             <div class="text-center">
                             <ul class="pagination pagination-centered hide-if-no-paging"></ul>
                             </div>

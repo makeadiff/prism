@@ -32,6 +32,24 @@ class User extends Eloquent
                                 AND (Group.type = ? OR Group.type = ?)
                                 ',array('volunteer','national','fellow'));
 
+        //Hack to get rid of duplicate entries
+
+        $count = count($users);
+
+        for($outer = 0; $outer < $count; $outer++) {
+            for($inner = 0; $inner < $count; $inner ++ ) {
+
+                if(isset($users[$outer]) && isset($users[$inner])) {
+                    if($outer != $inner && $users[$outer]->id == $users[$inner]->id) {
+                        unset($users[$inner]);
+                    }
+                }
+
+
+            }
+        }
+
+
         return $users;
     }
 
@@ -39,7 +57,8 @@ class User extends Eloquent
     {
         $groups = DB::select('SELECT `Group`.id,`Group`.name FROM `Group`
                     INNER JOIN `UserGroup` ON `Group`.id=`UserGroup`.group_id
-                    WHERE `UserGroup`.user_id=?',array($user_id));
+                    WHERE `UserGroup`.user_id=?
+                    AND (Group.type = ? OR Group.type = ?)',array($user_id,'national','fellow'));
 
         $all_groups = array();
         foreach($groups as $group) {
@@ -59,6 +78,17 @@ class User extends Eloquent
             return 'Done';
     }
 
+    public static function getReviewedBy($user_id)
+    {
+        $user = User::find($user_id);
+        $reviewer = $user->reviewer()->first();
+
+        if(!empty($reviewer))
+            return $reviewer->name;
+        else
+            return '';
+    }
+
 
     public static function getVerticalStatus()
     {
@@ -71,7 +101,8 @@ class User extends Eloquent
                                         ON Vertical.id = `Group`.vertical_id
                                         WHERE User.status = ? AND User.user_type = ?
                                         AND (Group.type = ? OR Group.type = ?)
-                                        GROUP BY Vertical.id',array(1,'volunteer','national','fellow'));
+                                        AND Group.name <> ? AND Group.name <> ?
+                                        GROUP BY Vertical.id',array(1,'volunteer','national','fellow','All Access','Executive Team'));
 
         $vertical_completed = DB::select('SELECT Vertical.id as id, COUNT(User.id) as completed FROM User
                                         INNER JOIN UserGroup
@@ -84,7 +115,8 @@ class User extends Eloquent
                                         ON prism_reviewer_user.user_id = User.id
                                         WHERE User.status = ? AND User.user_type = ?
                                         AND (Group.type = ? OR Group.type = ?)
-                                        GROUP BY Vertical.id',array(1,'volunteer','national','fellow'));
+                                        AND Group.name <> ? AND Group.name <> ?
+                                        GROUP BY Vertical.id',array(1,'volunteer','national','fellow','All Access','Executive Team'));
 
         foreach($vertical_total as $vt) {
             $vt->completed = 0;
@@ -97,6 +129,85 @@ class User extends Eloquent
         }
 
         return $vertical_total;
+    }
+
+    public static function getScore($user_id, $topic_id)
+    {
+        $score = DB::select('SELECT AVG(prism_answers.level) AS score FROM prism_answers
+                                INNER JOIN prism_answer_user
+                                ON prism_answer_user.answer_id = prism_answers.id
+                                INNER JOIN prism_questions
+                                ON prism_answers.question_id = prism_questions.id
+                                WHERE prism_answer_user.user_id = ? AND prism_questions.topic_id = ?',
+                                array($user_id,$topic_id));
+
+        if(!empty($score[0]->score))
+          return $score[0]->score;
+        else
+          return 0;
+
+
+
+    }
+
+    public static function getVerticalScore()
+    {
+        $users = DB::select('SELECT User.id as id, User.name as name,City.name as city,City.id as city_id,
+                                Region.name as region, Region.id as region_id,
+                                Vertical.name as vertical, Vertical.id as vertical_id FROM User
+                                INNER JOIN City
+                                ON User.city_id = City.id
+                                INNER JOIN Region
+                                ON City.region_id = Region.id
+                                INNER JOIN UserGroup
+                                ON UserGroup.user_id = User.id
+                                INNER JOIN `Group`
+                                ON `Group`.id = UserGroup.group_id
+                                INNER JOIN Vertical
+                                ON Vertical.id = `Group`.vertical_id
+                                WHERE User.status = 1 AND User.user_type = ?
+                                AND (Group.type = ? OR Group.type = ?)
+                                AND Group.name <> ? AND Group.name <> ?
+                                ',array('volunteer','national','fellow','All Access','Executive Team'));
+
+        $verticals = DB::select('SELECT id, name FROM Vertical');
+        $cities = DB::select('SELECT id, name FROM City');
+        $regions = DB::select('SELECT id, name FROM Region');
+        $topics = Topic::getTopics();
+
+        $vertical_score = array();
+
+        foreach($users as $user) {
+            foreach($verticals as $vertical) {
+                foreach($cities as $city) {
+                    foreach($topics as $topic) {
+                        if($user->vertical_id == $vertical->id && $user->city_id == $city->id) {
+                            $score = User::getScore($user->id,$topic->id);
+
+                            if(!isset($vertical_score[$vertical->id][$city->id][$topic->id]['count']))
+                                $vertical_score[$vertical->id][$city->id][$topic->id]['count'] = 0;
+
+                            if($score != 0)
+                                $vertical_score[$vertical->id][$city->id][$topic->id]['count']++;
+
+                            if(!isset($vertical_score[$vertical->id][$city->id][$topic->id]['total']))
+                                $vertical_score[$vertical->id][$city->id][$topic->id]['total'] = 0;
+
+                            $vertical_score[$vertical->id][$city->id][$topic->id]['total'] += $score;
+
+                            if(!isset($vertical_score[$vertical->id][$city->id][$topic->id]['score']))
+                                $vertical_score[$vertical->id][$city->id][$topic->id]['score'] = 0;
+                            if($score != 0)
+                                $vertical_score[$vertical->id][$city->id][$topic->id]['score'] = $vertical_score[$vertical->id][$city->id][$topic->id]['total'] / $vertical_score[$vertical->id][$city->id][$topic->id]['count'];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $vertical_score;
+
+
     }
 
     public function saveAnswer($answer_id)

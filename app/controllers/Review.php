@@ -21,22 +21,39 @@ class Review extends BaseController
         foreach ($users as $user) {
             $user->groups = User::getUserGroups($user->id);
             $user->status = User::getStatus($user->id);
+            $user->reviewer = User::getReviewedBy($user->id);
 
         }
 
         return $users;
     }
 
+
     public function saveReview()
     {
+        $topics = Topic::getTopics();
+
+        $rules = array();
+
+        foreach($topics as $topic) {
+            $questions = $topic->question()->get();
+            foreach($questions as $question) {
+                $rules['question_' . $question->id] = 'required';
+            }
+        }
+
+        $validator = Validator::make(Input::all(),$rules);
+
+        if($validator->fails()) {
+            return Redirect::to('review-user?user=' . Input::get('user'))->withErrors($validator);
+        }
+
         $user = User::find(Input::get('user'));
 
         $reviewer = Reviewer::find($_SESSION['user_id']);
 
         $user->removeReviewer();
         $user->saveReviewer($reviewer);
-
-        $topics = Topic::getTopics();
 
         $user->removeAnswers();
 
