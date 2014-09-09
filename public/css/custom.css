@@ -77,6 +77,10 @@ p.question
     color:#ffffff;
 }
 
+.answer
+{
+    font-weight: normal;
+}
 .transparent
 {
     background-color: Transparent;

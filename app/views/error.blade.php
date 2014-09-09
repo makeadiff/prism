@@ -2,7 +2,7 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href=".">Reimbursement</a>
+<a class="navbar-brand" href=".">MAD 360</a>
 @stop
 
 @section('navbar-links')

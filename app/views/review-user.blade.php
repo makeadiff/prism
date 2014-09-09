@@ -2,7 +2,7 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href=".">Professionalism</a>
+<a class="navbar-brand" href=".">MAD 360</a>
 @stop
 
 @section('navbar-links')
@@ -37,10 +37,10 @@
 
                     @foreach($questions as $question)
                         <p class="question">Q. {{{$question->subject}}}</p>
-                        <?php $answers = $question->answer()->orderBy('level','desc')->get();?>
+                        <?php $answers = $question->answer()->orderBy('level','asc')->get();?>
 
                         @foreach($answers as $answer)
-                            <label><input name="question_{{{$question->id}}}"type="radio" id="answer_{{{$answer->id}}}" value="{{{$answer->id}}}">&nbsp;{{{$answer->subject}}}</label><br>
+                            <label class="answer"><input name="question_{{{$question->id}}}"type="radio" id="answer_{{{$answer->id}}}" value="{{{$answer->id}}}">&nbsp;{{{$answer->subject}}}</label><br>
                         @endforeach
                         <br>
                     @endforeach

@@ -6,7 +6,7 @@
     <div class="centered">
         <br>
         <br>
-        <h1 class="title">Professionalism</h1>
+        <h1 class="title">MAD 360</h1>
         <br>
 
 
@@ -21,9 +21,7 @@
 
         <br>
 
-        <div class="row">
-            <a href='score' class='btn btn-primary btn-lg transparent'>Scores</a>
-        </div>
+
     </div>
 </div>
 @stop
