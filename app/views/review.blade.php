@@ -46,10 +46,10 @@
                 <tr>
                     <th style="text-decoration:underline">Name</th>
                     <th data-sort-initial="true" style="text-decoration:underline">City</th>
-                    <th style="text-decoration:underline">Region</th>
-                    <th style="text-decoration:underline">Profile</th>
+                    <th data-hide="phone" style="text-decoration:underline">Region</th>
+                    <th data-hide="phone" style="text-decoration:underline">Profile</th>
                     <th style="text-decoration:underline">Status</th>
-                    <th style="text-decoration:underline">Reviewed By</th>
+                    <th data-hide="phone" style="text-decoration:underline">Reviewed By</th>
                 </tr>
                 </thead>
                 <tbody>

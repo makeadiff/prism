@@ -13,7 +13,11 @@
     <script src="js/footable.sort.min.js"></script>
     <script type="text/javascript">
         $(function () {
-            $('.footable').footable();
+            $('.footable').footable({
+                breakpoints: {
+                    phone: 555
+                }
+            });
         });
     </script>
     @yield('head')
