@@ -23,7 +23,7 @@
         </div>
         <br>
         <div class="row">
-            <a href={{{URL::to('/')}}} class='btn btn-primary btn-lg transparent'>Back to Home</a>
+            <a href={{{URL::to('/review')}}} class='btn btn-primary btn-lg transparent'>Back to Review</a>
         </div>
     </div>
 </div>
