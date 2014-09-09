@@ -40,7 +40,7 @@
                         <?php $answers = $question->answer()->orderBy('level','asc')->get();?>
 
                         @foreach($answers as $answer)
-                            <label class="answer"><input name="question_{{{$question->id}}}"type="radio" id="answer_{{{$answer->id}}}" value="{{{$answer->id}}}">&nbsp;{{{$answer->subject}}}</label><br>
+                            <label class="answer"><input name="question_{{{$question->id}}}"type="radio" id="answer_{{{$answer->id}}}" value="{{{$answer->id}}}">&nbsp;L{{{$answer->level}}}&nbsp;:&nbsp;{{{$answer->subject}}}</label><br>
                         @endforeach
                         <br>
                     @endforeach
