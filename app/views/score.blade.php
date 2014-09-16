@@ -114,7 +114,7 @@
                     @foreach($verticals as $vertical)
                         @foreach($topics as $topic)
                             @if(isset($vertical_score[$vertical->id][$city->id][$topic->id]['score']))
-                                <td>{{{$vertical_score[$vertical->id][$city->id][$topic->id]['score']}}}</td>
+                                <td>{{{round($vertical_score[$vertical->id][$city->id][$topic->id]['score'],1)}}}</td>
                                 <?php
                                 if($vertical_score[$vertical->id][$city->id][$topic->id]['score'] != 0) {
                                     $city_total += $vertical_score[$vertical->id][$city->id][$topic->id]['score'];
