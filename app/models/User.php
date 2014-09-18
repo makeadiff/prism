@@ -14,6 +14,69 @@ class User extends Eloquent
         return $this->belongsToMany('Reviewer','prism_reviewer_user')->withTimestamps();
     }
 
+    public static function getCity($user_id)
+    {
+        $city = DB::select('SELECT city_id FROM User WHERE id = ?',array($user_id));
+
+        return $city[0]->city_id;
+    }
+
+    public static function checkIfCTL($user_id)
+    {
+        $group = DB::select('SELECT Group.name as group_name FROM User
+                                INNER JOIN UserGroup
+                                ON UserGroup.user_id = User.id
+                                INNER JOIN `Group`
+                                ON `Group`.id = UserGroup.group_id
+                                WHERE User.id = ?',array($user_id));
+
+        if($group[0]->group_name == 'City Team Lead')
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public static function getCityUsers($city_id)
+    {
+        $users = DB::select('SELECT User.id as id, User.name as name,City.name as city,Region.name as region FROM User
+                                INNER JOIN City
+                                ON User.city_id = City.id
+                                INNER JOIN Region
+                                ON City.region_id = Region.id
+                                INNER JOIN UserGroup
+                                ON UserGroup.user_id = User.id
+                                INNER JOIN `Group`
+                                ON `Group`.id = UserGroup.group_id
+                                INNER JOIN Vertical
+                                ON Vertical.id = `Group`.vertical_id
+                                WHERE User.status = 1 AND User.user_type = ?
+                                AND (Group.type = ? OR Group.type = ?)
+                                AND City.id = ?
+                                ',array('volunteer','national','fellow',$city_id));
+
+        //Hack to get rid of duplicate entries
+
+        $count = count($users);
+
+        for($outer = 0; $outer < $count; $outer++) {
+            for($inner = 0; $inner < $count; $inner ++ ) {
+
+                if(isset($users[$outer]) && isset($users[$inner])) {
+                    if($outer != $inner && $users[$outer]->id == $users[$inner]->id) {
+                        unset($users[$inner]);
+                    }
+                }
+
+
+            }
+        }
+
+
+        return $users;
+    }
+
 
     public static function getUserDetails()
     {
@@ -148,6 +211,19 @@ class User extends Eloquent
 
 
 
+    }
+
+    public static function getAnswers($user_id)
+    {
+        $data = DB::select('SELECT prism_questions.subject as question, prism_answers.level as level, prism_answers.subject as answer
+                            FROM prism_answers
+                            INNER JOIN prism_answer_user
+                            ON prism_answer_user.answer_id = prism_answers.id
+                            INNER JOIN prism_questions
+                            ON prism_answers.question_id = prism_questions.id
+                            WHERE prism_answer_user.user_id = ?
+                            GROUP BY prism_questions.id',array($user_id));
+        return $data;
     }
 
     public static function getVerticalScore()

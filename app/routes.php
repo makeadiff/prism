@@ -9,7 +9,7 @@ Route::filter('login_check',function()
     if(empty($_SESSION['user_id'])){
 
         if(App::environment('local'))
-            return Redirect::to('http://localhost/makeadiff.in/home/makeadiff/public_html/apps/set_session_test.php?url=' . base64_encode(Request::url()));
+            return Redirect::to('http://localhost/makeadiff.in/home/makeadiff/public_html/madapp/index.php/auth/login/' . base64_encode(Request::url()));
         else
             return Redirect::to('http://makeadiff.in/madapp/index.php/auth/login/' . base64_encode(Request::url()));
 
@@ -28,6 +28,8 @@ Route::group(array('before'=>'login_check'),function()
     Route::get('/error','Prism@showError');
     Route::get('/report','Report@showReport');
     Route::get('/score','Score@showScore');
+    Route::get('/city-score','CityScore@showCityScore');
+
 });
 
 
