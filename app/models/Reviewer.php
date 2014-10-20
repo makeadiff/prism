@@ -6,7 +6,7 @@ class Reviewer extends Eloquent
 
     public function user()
     {
-        return $this->belongsToMany('user','prism_reviewer_user')->withTimestamps();
+        return $this->belongsToMany('user','prism_answer_user')->withTimestamps();
     }
 
 

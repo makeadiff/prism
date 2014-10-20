@@ -11,7 +11,7 @@ class User extends Eloquent
 
     public function reviewer()
     {
-        return $this->belongsToMany('Reviewer','prism_reviewer_user')->withTimestamps();
+        return $this->belongsToMany('Reviewer','prism_answer_user')->withTimestamps();
     }
 
     public static function getCity($user_id)
@@ -133,7 +133,7 @@ class User extends Eloquent
 
     public static function getStatus($user_id)
     {
-        $count = DB::select('SELECT COUNT(*) as count FROM prism_reviewer_user WHERE user_id = ?',array($user_id));
+        $count = DB::select('SELECT COUNT(*) as count FROM prism_answer_user WHERE user_id = ?',array($user_id));
 
         if($count[0]->count == 0)
             return 'Pending';
