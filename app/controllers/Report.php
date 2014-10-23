@@ -37,7 +37,7 @@ class Report extends BaseController
 
 
             $groups = $vertical->group()->where('group_type','=','normal')->where(function($query){
-                $query->where('type','=','strat')->orWhere('type','=','fellow');
+                $query->where('type','=','strat')->orWhere('type','=','fellow')->orWhere('type','=','national');
                 })->get();
 
             foreach($groups as $group) {
@@ -82,7 +82,7 @@ class Report extends BaseController
 
 
             $groups = $vertical->group()->where('group_type','=','normal')->where(function($query){
-                    $query->where('type','=','strat')->orWhere('type','=','fellow');
+                    $query->where('type','=','strat')->orWhere('type','=','fellow')->orWhere('type','=','national');
                 })->get();
 
             foreach($groups as $group) {
