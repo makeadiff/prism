@@ -21,14 +21,18 @@ Route::filter('login_check',function()
 Route::group(array('before'=>'login_check'),function()
 {
     Route::get('/', 'Home@showHome');
-    Route::get('/review', 'Review@showReview');
-    Route::get('/review-user','Review@showReviewUser');
+    Route::get('/review/{type}', 'Review@showReview');
+    Route::get('/review-user/{type}/{user_id}','Review@showReviewUser');
     Route::post('/saveReview','Review@saveReview');
     Route::get('/success','Prism@showSuccess');
     Route::get('/error','Prism@showError');
-    Route::get('/report','Report@showReport');
+
     Route::get('/score','Score@showScore');
     Route::get('/city-score','CityScore@showCityScore');
+    Route::get('/review-type','Review@showReviewType');
+    Route::get('/report-type','Report@showReportType');
+    Route::get('/report/manager/{cycle_id?}','Report@showManagerReport');
+    Route::get('/report/managee/{cycle_id?}','Report@showManageeReport');
 
 });
 

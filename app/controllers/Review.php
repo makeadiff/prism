@@ -4,15 +4,21 @@ class Review extends BaseController
 {
 
 
-    public function showReview()
+    public function showReview($type)
     {
         $users = $this->getTableData();
-        return View::make('review')->with('users',$users);
+        return View::make('review')->with('users',$users)->with('type',$type);
     }
 
-    public function showReviewUser()
+    public function showReviewType()
     {
-        return View::make('review-user')->with('topics',Topic::getTopics());
+        return View::make('review-type');
+    }
+
+    public function showReviewUser($type,$user_id)
+    {
+        $user_name = User::find($user_id)->name;
+        return View::make('review-user')->with('topics',Topic::getTopics())->with('type',$type)->with('user_id',$user_id)->with('user_name',$user_name);
     }
 
     public function getTableData()
@@ -21,7 +27,7 @@ class Review extends BaseController
         foreach ($users as $user) {
             $user->groups = User::getUserGroups($user->id);
             $user->status = User::getStatus($user->id);
-            $user->reviewer = User::getReviewedBy($user->id);
+            $user->reviewers = User::getReviewedBy($user->id);
 
         }
 
@@ -32,6 +38,8 @@ class Review extends BaseController
     public function saveReview()
     {
         $topics = Topic::getTopics();
+
+        $cycle = User::getCurrentCycle();
 
         $rules = array();
 
@@ -45,24 +53,41 @@ class Review extends BaseController
         $validator = Validator::make(Input::all(),$rules);
 
         if($validator->fails()) {
-            return Redirect::to('review-user?user=' . Input::get('user'))->withErrors($validator);
+            return Redirect::to('review-user/' . Input::get('type') . '/' . Input::get('user'))->withErrors($validator);
         }
 
         $user = User::find(Input::get('user'));
+        $type = Input::get('type');
 
-        $reviewer = Reviewer::find($_SESSION['user_id']);
+        $reviewer_id = $_SESSION['user_id'];
 
-        $user->removeReviewer();
-        $user->saveReviewer($reviewer);
 
-        $user->removeAnswers();
+        //Remove existing answers of the same type by the same reviewer
+        DB::statement('DELETE FROM prism_answer_user
+                    WHERE prism_answer_user.user_id = ? AND prism_answer_user.reviewer_id = ? AND prism_answer_user.type = ?
+                    AND DATE(created_at) < ? ',
+                    array($user->id,$reviewer_id,$type,$cycle->start_date));
+
+
 
         foreach($topics as $topic) {
             $questions = $topic->question()->get();
             foreach($questions as $question) {
-                $user->saveAnswer(Input::get('question_' . $question->id));
+                $answer = Answer::find(Input::get('question_' . $question->id));
+                $comment = Input::get('comment_' . $question->id);
+                $user->answer()->attach($answer,array('reviewer_id' => $reviewer_id, 'type' => $type, 'comment' => $comment));
+
             }
         }
+
+        $stj_sub = Input::get('speak_to_jithin');
+        if(!empty($stj_sub)) {
+            $stj = new SpeakToJithin;
+            $stj->subject = $stj_sub;
+            $stj->user_id = $reviewer_id;
+            $stj->save();
+        }
+
 
         return Redirect::to('success')->with('message','You have successfully saved review of ' . $user->name);
     }

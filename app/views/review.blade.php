@@ -12,6 +12,10 @@
         });
 
 
+
+
+
+
     });
 
 </script>
@@ -19,18 +23,20 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href=".">MAD 360</a>
-@stop
-
-@section('navbar-links')
-<li><a href="" class="active">Review</a></li>
-<li><a href="./report">Report</a></li>
-
+<a class="navbar-brand" href="{{{URL::to('/')}}}/">MAD 360</a>
 @stop
 
 
-<div class="board">
-    <h2 class="sub-title">Review</h2>
+
+<div class="board centered">
+    <br>
+    @if($type == 'manager')
+        <h1 class="title">Manager Review</h1>
+    @elseif($type == 'managee')
+        <h1 class="title">Managee Review</h1>
+    @else
+        <h1 class="title">Peer Review</h1>
+    @endif
     <br><br>
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-12">
@@ -41,7 +47,7 @@
             </form>
 
             <br>
-            <table data-page-size="25" data-filter="#filter" class="footable table table-bordered table-responsive" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
+            <table data-page-size="22" data-filter="#filter" class="footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                 <thead>
                 <tr>
                     <th style="text-decoration:underline">Name</th>
@@ -49,22 +55,29 @@
                     <th data-hide="phone" style="text-decoration:underline">Region</th>
                     <th data-hide="phone" style="text-decoration:underline">Profile</th>
                     <th style="text-decoration:underline">Status</th>
-                    <th data-hide="phone" style="text-decoration:underline">Reviewed By</th>
+                    <th data-hide="all" style="text-decoration:underline" data-filter-ignore="true">Reviewed By</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($users as $user)
                     <tr>
-                        <td><a class="white" href="review-user?user={{{$user->id}}}">{{{$user->name}}}</a></td>
+                        <td><a class="white" href="{{{URL::to('/')}}}/review-user/{{{$type}}}/{{{$user->id}}}">{{{$user->name}}}</a></td>
                         <td>{{{$user->city}}}</td>
-                        <td>{{{$user->region}}}</td>
+                        <td>{{{$user->region}}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             @foreach($user->groups as $group)
                                 {{{$group}}}
                             @endforeach
                         </td>
-                        <td>{{{$user->status}}}</td>
-                        <td>{{{$user->reviewer}}}</td>
+                        <td>{{{$user->status}}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            @foreach($user->reviewers as $key => $reviewer)
+                                @if($key!=0)
+                                    ,
+                                @endif
+                                {{{$reviewer}}}
+                            @endforeach
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

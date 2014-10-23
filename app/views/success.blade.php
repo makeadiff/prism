@@ -2,14 +2,10 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href=".">MAD 360</a>
+<a class="navbar-brand" href="{{{URL::to('/')}}}">MAD 360</a>
 @stop
 
-@section('navbar-links')
-<li><a href="./review">Review</a></li>
-<li><a href="./report">Report</a></li>
 
-@stop
 
 
 <div class="container-fluid">
@@ -23,7 +19,7 @@
         </div>
         <br>
         <div class="row">
-            <a href={{{URL::to('/review')}}} class='btn btn-primary btn-lg transparent'>Back to Review</a>
+            <a href={{{URL::to('/review-type')}}} class='btn btn-primary btn-lg transparent'>Back to Review</a>
         </div>
     </div>
 </div>

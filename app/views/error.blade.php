@@ -2,13 +2,10 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href=".">MAD 360</a>
+<a class="navbar-brand" href="{{{URL::to('/')}}}">MAD 360</a>
 @stop
 
-@section('navbar-links')
-<li><a href="./telephone-internet">Telephone/Internet</a></li>
-<li><a href="./travel">Travel</a></li>
-@stop
+
 
 
 <div class="container-fluid">

@@ -11,7 +11,7 @@ class Answer extends Eloquent
 
     public function user()
     {
-        return $this->belongsToMany('User','prism_answer_user')->withTimestamps();
+        return $this->belongsToMany('User','prism_answer_user')->withPivot('reviewer_id','type','comment')->withTimestamps();
     }
 
     public static function getAnswers()

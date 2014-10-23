@@ -6,13 +6,19 @@ class User extends Eloquent
 
     public function answer()
     {
-        return $this->belongsToMany('Answer','prism_answer_user')->withTimestamps();
+        return $this->belongsToMany('Answer','prism_answer_user')->withPivot('reviewer_id','type','comment')->withTimestamps();
     }
 
-    public function reviewer()
+    public function city()
     {
-        return $this->belongsToMany('Reviewer','prism_answer_user')->withTimestamps();
+        return $this->belongsTo('City');
     }
+
+    public function group()
+    {
+        return $this->belongsToMany('Group','UserGroup','user_id','group_id');
+    }
+
 
     public static function getCity($user_id)
     {
@@ -131,9 +137,33 @@ class User extends Eloquent
         return $all_groups;
     }
 
+    public static function getCurrentCycle()
+    {
+        $today = new DateTime("today");
+        $today = date_format($today,'Y-m-d');
+
+        $cycles = Cycle::all();
+
+        $current_cycle = Cycle::first();
+
+        foreach($cycles as $cycle) {
+            if($today >= $cycle->start_date && $today <= $cycle->end_date) {
+                $current_cycle = $cycle;
+                break;
+            }
+
+        }
+
+        return $current_cycle;
+    }
+
     public static function getStatus($user_id)
     {
-        $count = DB::select('SELECT COUNT(*) as count FROM prism_answer_user WHERE user_id = ?',array($user_id));
+
+        $cycle = User::getCurrentCycle();
+
+        $count = DB::select('SELECT COUNT(*) as count FROM prism_answer_user WHERE user_id = ?
+                                AND created_at >= ? AND created_at <= ?',array($user_id,$cycle->start_date,$cycle->end_date));
 
         if($count[0]->count == 0)
             return 'Pending';
@@ -144,18 +174,35 @@ class User extends Eloquent
     public static function getReviewedBy($user_id)
     {
         $user = User::find($user_id);
-        $reviewer = $user->reviewer()->first();
 
-        if(!empty($reviewer))
-            return $reviewer->name;
-        else
-            return '';
+        $cycle = User::getCurrentCycle();
+
+        $reviewer_ids = array();
+
+        $answers = $user->answer()->wherePivot('created_at','<=',$cycle->end_date)->wherePivot('created_at','>=',$cycle->start_date)->get();
+
+        foreach($answers as $answer) {
+            array_push($reviewer_ids,$answer->pivot->reviewer_id);
+        }
+
+        $reviewer_ids = array_unique($reviewer_ids);
+
+        $reviewer_names = array();
+
+        foreach($reviewer_ids as $id) {
+            $reviewer = User::find($id);
+            if(!empty($reviewer))
+                array_push($reviewer_names,$reviewer->name);
+        }
+
+        return $reviewer_names;
+
     }
 
 
-    public static function getVerticalStatus()
+    /*public static function getVerticalStatus()
     {
-        $vertical_total = DB::select('SELECT Vertical.id as id, Vertical.name as name, COUNT(User.id) as total FROM User
+        $total_fellows_strats = DB::select('SELECT Vertical.id as id, Vertical.name as name, COUNT(User.id) as total FROM User
                                         INNER JOIN UserGroup
                                         ON UserGroup.user_id = User.id
                                         INNER JOIN `Group`
@@ -164,10 +211,9 @@ class User extends Eloquent
                                         ON Vertical.id = `Group`.vertical_id
                                         WHERE User.status = ? AND User.user_type = ?
                                         AND (Group.type = ? OR Group.type = ?)
-                                        AND Group.name <> ? AND Group.name <> ?
-                                        GROUP BY Vertical.id',array(1,'volunteer','national','fellow','All Access','Executive Team'));
+                                        GROUP BY Vertical.id',array(1,'volunteer','fellow','strat'));
 
-        $vertical_completed = DB::select('SELECT Vertical.id as id, COUNT(User.id) as completed FROM User
+        $completed_manager = DB::select('SELECT Vertical.id as id, COUNT(User.id) as completed FROM User
                                         INNER JOIN UserGroup
                                         ON UserGroup.user_id = User.id
                                         INNER JOIN `Group`
@@ -192,7 +238,7 @@ class User extends Eloquent
         }
 
         return $vertical_total;
-    }
+    }*/
 
     public static function getScore($user_id, $topic_id)
     {
@@ -286,26 +332,8 @@ class User extends Eloquent
 
     }
 
-    public function saveAnswer($answer_id)
-    {
-        $answer = Answer::find($answer_id);
-        $this->answer()->attach($answer);
-    }
 
-    public function removeAnswers()
-    {
-        $this->answer()->detach();
-    }
 
-    public function saveReviewer($reviewer)
-    {
 
-        $this->reviewer()->attach($reviewer);
-    }
-
-    public function RemoveReviewer()
-    {
-        $this->reviewer()->detach();
-    }
 
 }

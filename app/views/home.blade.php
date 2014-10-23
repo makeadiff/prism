@@ -9,14 +9,12 @@
         <h1 class="title">MAD 360</h1>
         <br>
 
-
-        <div class="row">
-            <a href='review' class='btn btn-primary btn-lg transparent'>Review</a>
+        <div class="col-md-6 col-sm-6 text-center">
+            <a href="{{{URL::to('/')}}}/review-type" class='btn btn-primary btn-dash '><img src="{{{URL::to('/')}}}/img/review.png"><br>Review</a>
         </div>
-        <br>
 
-        <div class="row">
-            <a href='report' class='btn btn-primary btn-lg transparent'>Report</a>
+        <div class="col-md-6 col-sm-6 text-center">
+            <a href="{{{URL::to('/')}}}/report-type" class='btn btn-primary btn-dash '><img src="{{{URL::to('/')}}}/img/reports.png"><br>Report</a>
         </div>
 
         <br>

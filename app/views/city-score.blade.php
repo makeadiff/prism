@@ -2,15 +2,10 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href=".">MAD 360</a>
+<a class="navbar-brand" href="{{{URL::to('/')}}}">MAD 360</a>
 @stop
 
-@section('navbar-links')
-<li><a href="./review">Review</a></li>
-<li><a href="./report">Report</a></li>
 
-
-@stop
 
 
 <div class="board">
