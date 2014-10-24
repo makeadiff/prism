@@ -58,9 +58,9 @@ class User extends Eloquent
                                 INNER JOIN Vertical
                                 ON Vertical.id = `Group`.vertical_id
                                 WHERE User.status = 1 AND User.user_type = ?
-                                AND (Group.type = ? OR Group.type = ?)
+                                AND (Group.type = ? OR Group.type = ? OR Group.type = ?)
                                 AND City.id = ?
-                                ',array('volunteer','national','fellow',$city_id));
+                                ',array('volunteer','national','fellow','strat',$city_id));
 
         //Hack to get rid of duplicate entries
 
@@ -98,8 +98,8 @@ class User extends Eloquent
                                 INNER JOIN Vertical
                                 ON Vertical.id = `Group`.vertical_id
                                 WHERE User.status = 1 AND User.user_type = ?
-                                AND (Group.type = ? OR Group.type = ?)
-                                ',array('volunteer','national','fellow'));
+                                AND (Group.type = ? OR Group.type = ? OR Group.type = ?)
+                                ',array('volunteer','national','fellow','strat'));
 
         //Hack to get rid of duplicate entries
 
@@ -127,7 +127,7 @@ class User extends Eloquent
         $groups = DB::select('SELECT `Group`.id,`Group`.name FROM `Group`
                     INNER JOIN `UserGroup` ON `Group`.id=`UserGroup`.group_id
                     WHERE `UserGroup`.user_id=?
-                    AND (Group.type = ? OR Group.type = ?)',array($user_id,'national','fellow'));
+                    AND (Group.type = ? OR Group.type = ? OR Group.type = ?)',array($user_id,'national','fellow','strat'));
 
         $all_groups = array();
         foreach($groups as $group) {
