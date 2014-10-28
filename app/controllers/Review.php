@@ -6,7 +6,7 @@ class Review extends BaseController
 
     public function showReview($type)
     {
-        $users = $this->getTableData();
+        $users = $this->getTableData($type);
         return View::make('review')->with('users',$users)->with('type',$type);
     }
 
@@ -21,13 +21,13 @@ class Review extends BaseController
         return View::make('review-user')->with('topics',Topic::getTopics())->with('type',$type)->with('user_id',$user_id)->with('user_name',$user_name);
     }
 
-    public function getTableData()
+    public function getTableData($type)
     {
         $users = User::getUserDetails();
         foreach ($users as $user) {
             $user->groups = User::getUserGroups($user->id);
-            $user->status = User::getStatus($user->id);
-            $user->reviewers = User::getReviewedBy($user->id);
+            $user->status = User::getStatus($user->id,$type);
+            $user->reviewers = User::getReviewedBy($user->id,$type);
 
         }
 

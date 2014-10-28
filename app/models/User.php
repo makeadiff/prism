@@ -157,13 +157,13 @@ class User extends Eloquent
         return $current_cycle;
     }
 
-    public static function getStatus($user_id)
+    public static function getStatus($user_id,$type)
     {
 
         $cycle = User::getCurrentCycle();
 
         $count = DB::select('SELECT COUNT(*) as count FROM prism_answer_user WHERE user_id = ?
-                                AND created_at >= ? AND created_at <= ?',array($user_id,$cycle->start_date,$cycle->end_date));
+                                AND created_at >= ? AND created_at <= ? AND type = ?',array($user_id,$cycle->start_date,$cycle->end_date,$type));
 
         if($count[0]->count == 0)
             return 'Pending';
@@ -171,7 +171,7 @@ class User extends Eloquent
             return 'Done';
     }
 
-    public static function getReviewedBy($user_id)
+    public static function getReviewedBy($user_id,$type)
     {
         $user = User::find($user_id);
 
@@ -179,7 +179,7 @@ class User extends Eloquent
 
         $reviewer_ids = array();
 
-        $answers = $user->answer()->wherePivot('created_at','<=',$cycle->end_date)->wherePivot('created_at','>=',$cycle->start_date)->get();
+        $answers = $user->answer()->wherePivot('created_at','<=',$cycle->end_date)->wherePivot('created_at','>=',$cycle->start_date)->wherePivot('type',$type)->get();
 
         foreach($answers as $answer) {
             array_push($reviewer_ids,$answer->pivot->reviewer_id);
