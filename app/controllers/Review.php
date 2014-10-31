@@ -12,7 +12,8 @@ class Review extends BaseController
 
     public function showReviewType()
     {
-        return View::make('review-type');
+
+        return View::make('review-type')->with('manager_status',User::checkIfManager());
     }
 
     public function showReviewUser($type,$user_id)
@@ -23,11 +24,13 @@ class Review extends BaseController
 
     public function getTableData($type)
     {
+        $cycle = User::getCurrentCycle();
+
         $users = User::getUserDetails();
         foreach ($users as $user) {
             $user->groups = User::getUserGroups($user->id);
-            $user->status = User::getStatus($user->id,$type);
-            $user->reviewers = User::getReviewedBy($user->id,$type);
+            $user->status = User::getStatus($user->id,$type,$cycle);
+            $user->reviewers = User::getReviewedBy($user->id,$type,$cycle);
 
         }
 

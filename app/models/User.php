@@ -137,6 +137,20 @@ class User extends Eloquent
         return $all_groups;
     }
 
+    public static function checkIfManager()
+    {
+        $user = User::find($_SESSION['user_id']);
+
+        $groups = $user->group()->get();
+
+        foreach($groups as $group) {
+            if($group->type == 'national' || $group->type == 'strat' || $group->name == 'City Team Lead' || $group->name == 'Fundraising Head')
+                return true;
+        }
+
+        return false;
+    }
+
     public static function getCurrentCycle()
     {
         $today = new DateTime("today");
@@ -157,25 +171,25 @@ class User extends Eloquent
         return $current_cycle;
     }
 
-    public static function getStatus($user_id,$type)
+    public static function getStatus($user_id,$type, $cycle)
     {
 
-        $cycle = User::getCurrentCycle();
+
 
         $count = DB::select('SELECT COUNT(*) as count FROM prism_answer_user WHERE user_id = ?
                                 AND created_at >= ? AND created_at <= ? AND type = ?',array($user_id,$cycle->start_date,$cycle->end_date,$type));
 
         if($count[0]->count == 0)
-            return 'Pending';
+            return 'No';
         else
-            return 'Done';
+            return 'Yes';
     }
 
-    public static function getReviewedBy($user_id,$type)
+    public static function getReviewedBy($user_id,$type, $cycle)
     {
         $user = User::find($user_id);
 
-        $cycle = User::getCurrentCycle();
+
 
         $reviewer_ids = array();
 

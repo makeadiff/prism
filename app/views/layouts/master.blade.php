@@ -56,7 +56,8 @@
 
 <body class="blue-red">
 <nav class="navbar navbar-default navbar-static-top" role="navigation">
-    <div class="navbar-header">
+    <div class="container-fluid">
+        <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -76,6 +77,13 @@
             @show
         </ul>
 
+        <ul class="nav navbar-nav navbar-right">
+
+            <li class=""><a href="{{{URL::to('/')}}}/../../../madapp/index.php/auth/logout">Logout</a></li>
+
+        </ul>
+
+    </div>
     </div>
 </nav>
 @yield('body')

@@ -30,16 +30,28 @@
 
 <div class="board centered">
     <br>
-    @if($type == 'manager')
-        <h1 class="title">Review Your Manager</h1>
-    @elseif($type == 'managee')
-        <h1 class="title">Review your Managee</h1>
-    @else
-        <h1 class="title">Review your Peer</h1>
-    @endif
-    <br><br>
+
+        <h1 class="title">User Report</h1>
+
+    <br>
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-12">
+
+            <div class="col-md-offset-4 col-md-4">
+                <select class="form-control" id="cycle">
+                    @foreach($cycles as $cycle)
+
+                    <option value="{{{$cycle->id}}}"
+                    @if($cycle_id == $cycle->id)
+                    selected="selected"
+                    @endif
+                    >{{{$cycle->name}}}</option>
+
+                    @endforeach
+                </select>
+            </div>
+            <br><br><br>
+
             <form class="form-inline text-center">
                 <label for="filter">Filter :&nbsp;</label>
                 <input type="text" id="filter" data-filter=#filter class="form-control input-sm">
@@ -54,30 +66,18 @@
                     <th data-sort-initial="true" style="text-decoration:underline">City</th>
                     <th data-hide="phone" style="text-decoration:underline">Region</th>
                     <th data-hide="phone" style="text-decoration:underline">Profile</th>
-                    <th style="text-decoration:underline">
-                        @if($type == 'manager')
-                            Reviewed by Managee
-                        @elseif($type == 'managee')
-                            Reviewed by Manager
-                        @else
-                            Reviewed by Peer
-                        @endif
-                    </th>
-                    <th data-hide="all" style="text-decoration:underline" data-filter-ignore="true">
-                        @if($type == 'manager')
-                        Reviewed by Managees
-                        @elseif($type == 'managee')
-                        Reviewed by Managers
-                        @else
-                        Reviewed by Peers
-                        @endif
-                    </th>
+                    <th style="text-decoration:underline">Reviewed by Manager</th>
+                    <th style="text-decoration:underline">Reviewed by Managee</th>
+                    <th style="text-decoration:underline">Reviewed by Peer</th>
+                    <th data-hide="all" style="text-decoration:underline" data-filter-ignore="true">Reviewed by Managers</th>
+                    <th data-hide="all" style="text-decoration:underline" data-filter-ignore="true">Reviewed by Managees</th>
+                    <th data-hide="all" style="text-decoration:underline" data-filter-ignore="true">Reviewed by Peers</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($users as $user)
                     <tr>
-                        <td><a class="white" href="{{{URL::to('/')}}}/review-user/{{{$type}}}/{{{$user->id}}}">{{{$user->name}}}</a></td>
+                        <td>{{{$user->name}}}</td>
                         <td>{{{$user->city}}}</td>
                         <td>{{{$user->region}}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td>
@@ -85,13 +85,31 @@
                                 {{{$group}}}
                             @endforeach
                         </td>
-                        <td>{{{$user->status}}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>{{{$user->manager_review_status}}}</td>
+                        <td>{{{$user->managee_review_status}}}</td>
+                        <td>{{{$user->peer_review_status}}}</td>
                         <td>
-                            @foreach($user->reviewers as $key => $reviewer)
+                            @foreach($user->managers as $key => $manager)
                                 @if($key!=0)
                                     ,
                                 @endif
-                                {{{$reviewer}}}
+                                {{{$manager}}}
+                            @endforeach
+                        </td>
+                        <td>
+                            @foreach($user->managees as $key => $managee)
+                            @if($key!=0)
+                            ,
+                            @endif
+                            {{{$managee}}}
+                            @endforeach
+                        </td>
+                        <td>
+                            @foreach($user->peers as $key => $peer)
+                            @if($key!=0)
+                            ,
+                            @endif
+                            {{{$peer}}}
                             @endforeach
                         </td>
                     </tr>
@@ -99,7 +117,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="text-center">
                             <ul class="pagination pagination-centered hide-if-no-paging"></ul>
                             </div>
@@ -111,6 +129,15 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+        $('#cycle').change(function(){
+            var str = "{{{URL::to('/')}}}/report/user/" + $('#cycle').val();
+            window.location = str;
+        })
+    });
+</script>
 
 
 

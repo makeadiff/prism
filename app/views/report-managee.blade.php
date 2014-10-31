@@ -10,6 +10,7 @@
 
 <div class="board centered">
     <h1 class="title">Managee Review Report</h1>
+    <p class="sub-text">(This report shows the list of managees whose review has not been completed by their managers)</p>
     <br>
 
 
@@ -39,10 +40,10 @@
                 </tr>
                     @foreach($verticals as $vertical)
                         <tr>
-                            <td><a class = "white" href="#collapse_{{{$vertical->id}}}" data-toggle="collapse">{{{$vertical->name}}}</a>
+                            <td><a class = "white" href="#collapse_{{{$vertical->id}}}" data-toggle="collapse"><span class="glyphicon glyphicon-plus"></span>&nbsp;{{{$vertical->name}}}</a>
                             <div id="collapse_{{{$vertical->id}}}" class="panel-collapse collapse out">
                                 @foreach($vertical->users as $user)
-                                    <strong>{{{$user->name}}}'s</strong> ({{{$user->city()->first()->name}}}) managee review not done<br>
+                                    <strong>{{{$user->name}}}'s</strong> ({{{$user->city()->first()->name}}}) review has not been done by their manager<br>
                                 @endforeach
                             </div></td>
                             <td>{{{$vertical->done}}}/{{{$vertical->total}}}</td>

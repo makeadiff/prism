@@ -33,6 +33,7 @@ Route::group(array('before'=>'login_check'),function()
     Route::get('/report-type','Report@showReportType');
     Route::get('/report/manager/{cycle_id?}','Report@showManagerReport');
     Route::get('/report/managee/{cycle_id?}','Report@showManageeReport');
+    Route::get('/report/user/{cycle_id?}','Report@showUserReport');
 
 });
 
