@@ -68,8 +68,8 @@ class Review extends BaseController
         //Remove existing answers of the same type by the same reviewer
         DB::statement('DELETE FROM prism_answer_user
                     WHERE prism_answer_user.user_id = ? AND prism_answer_user.reviewer_id = ? AND prism_answer_user.type = ?
-                    AND DATE(created_at) < ? ',
-                    array($user->id,$reviewer_id,$type,$cycle->start_date));
+                    AND DATE(created_at) >= ? AND DATE(created_at) <= ?',
+                    array($user->id,$reviewer_id,$type,$cycle->start_date,$cycle->end_date));
 
 
 
