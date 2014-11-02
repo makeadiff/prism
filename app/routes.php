@@ -35,6 +35,10 @@ Route::group(array('before'=>'login_check'),function()
     Route::get('/report/managee/{cycle_id?}','Report@showManageeReport');
     Route::get('/report/user/{cycle_id?}','Report@showUserReport');
 
+    Route::get('/my-profile/{cycle_id?}','Profile@showMyProfile');
+    Route::get('/select-profile/','Profile@showselectProfile');
+    Route::get('/view-profile/{user_id}/{cycle_id?}','Profile@showViewProfile');
+
 });
 
 

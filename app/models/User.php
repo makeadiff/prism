@@ -151,6 +151,8 @@ class User extends Eloquent
         return false;
     }
 
+
+
     public static function getCurrentCycle()
     {
         $today = new DateTime("today");
