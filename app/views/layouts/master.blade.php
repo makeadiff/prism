@@ -12,6 +12,7 @@
     <script src="{{{URL::to('/')}}}/js/footable.paginate.min.js"></script>
     <script src="{{{URL::to('/')}}}/js/footable.sort.min.js"></script>
     <script src="{{{URL::to('/')}}}/js/uservoice.js"></script>
+    <title>MADApp :: Prism</title>
     <script type="text/javascript">
         $(function () {
             $('.footable').footable({
