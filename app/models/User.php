@@ -277,6 +277,7 @@ class User extends Eloquent
 
     public static function getAnswers($user_id)
     {
+        $cycle = User::getCurrentCycle();
         $data = DB::select('SELECT prism_questions.subject as question, prism_answers.level as level, prism_answers.subject as answer
                             FROM prism_answers
                             INNER JOIN prism_answer_user
@@ -284,7 +285,8 @@ class User extends Eloquent
                             INNER JOIN prism_questions
                             ON prism_answers.question_id = prism_questions.id
                             WHERE prism_answer_user.user_id = ?
-                            GROUP BY prism_questions.id',array($user_id));
+                            AND prism_answer_user.created_at >= ? AND prism_answer_user.created_at <= ?
+                            GROUP BY prism_questions.id',array($user_id,$cycle->start_date,$cycle->end_date));
         return $data;
     }
 
