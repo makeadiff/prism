@@ -26,6 +26,7 @@ Route::group(array('before'=>'login_check'),function()
     Route::post('/saveReview','Review@saveReview');
     Route::get('/success','Prism@showSuccess');
     Route::get('/error','Prism@showError');
+    Route::get('/logout','Prism@logout');
 
     Route::get('/score','Score@showScore');
     Route::get('/city-score','CityScore@showCityScore');

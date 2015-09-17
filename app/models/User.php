@@ -144,7 +144,23 @@ class User extends Eloquent
         $groups = $user->group()->get();
 
         foreach($groups as $group) {
-            if($group->type == 'national' || $group->type == 'strat' || $group->name == 'City Team Lead' || $group->name == 'Fundraising Head')
+            //if($group->type == 'national' || $group->type == 'strat' || $group->name == 'City Team Lead' || $group->name == 'Fundraising Head')
+            if($group->type == 'national' || $group->type == 'strat')
+                return true;
+        }
+
+        return false;
+    }
+
+    public static function checkIfBro()
+    {
+        $user = User::find($_SESSION['user_id']);
+
+        $groups = $user->group()->get();
+
+        foreach($groups as $group) {
+            //if($group->type == 'national' || $group->type == 'strat' || $group->name == 'City Team Lead' || $group->name == 'Fundraising Head')
+            if($group->type == 'national')
                 return true;
         }
 

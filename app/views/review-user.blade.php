@@ -44,10 +44,10 @@
                     @endforeach
                     <br><br>
                 @endforeach
-                <p class="question">Speak to Jithin : </p>
+               {{-- <p class="question">Speak to Jithin : </p>
                 <p class="sub-text">(This message will be sent directly to Jithin)</p>
                 <textarea class="form-control" placeholder="Speak To Jithin" rows="3" name="speak_to_jithin"></textarea>
-                <br><br>
+                <br><br>--}}
                 <input type="hidden" name="user" value="{{{$user_id}}}">
                 <input type="hidden" name="type" value="{{{$type}}}">
                 <a href={{{URL::to('/review-type')}}} class="btn btn-default">Cancel</a>

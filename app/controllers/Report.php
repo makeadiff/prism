@@ -4,7 +4,7 @@ class Report extends BaseController
 {
 
 
-    public function showManagerReport($cycle_id = 2)
+    public function showManagerReport($cycle_id = 3)
     {
         $cycles = Cycle::all();
 
@@ -12,7 +12,7 @@ class Report extends BaseController
                         ->with('cycle_id',$cycle_id);
     }
 
-    public function showManageeReport($cycle_id = 2)
+    public function showManageeReport($cycle_id = 3)
     {
         $cycles = Cycle::all();
 
@@ -20,7 +20,7 @@ class Report extends BaseController
             ->with('cycle_id',$cycle_id);
     }
 
-    public function showUserReport($cycle_id = 2)
+    public function showUserReport($cycle_id = 3)
     {
         $cycle = Cycle::find($cycle_id);
         $users = User::getUserDetails();

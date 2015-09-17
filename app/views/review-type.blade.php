@@ -17,15 +17,17 @@
         </div>
 
 
-        @if($manager_status == true)
+        @if($is_manager == true)
             <div class="col-md-4 col-sm-6 text-center">
                 <a href="{{{URL::to('/')}}}/review/managee" class='btn btn-primary btn-dash '><img class="dash" src="{{{URL::to('/')}}}/img/managee.png"><br>Review your<br>Managee</a>
             </div>
         @endif
 
-        <div class="col-md-4 col-sm-6 text-center">
-            <a href="{{{URL::to('/')}}}/review/peer" class='btn btn-primary btn-dash '><img class="dash" src="{{{URL::to('/')}}}/img/peer.png"><br>Review your<br>Peer</a>
-        </div>
+        @if($is_bro == true)
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href="{{{URL::to('/')}}}/review/peer" class='btn btn-primary btn-dash '><img class="dash" src="{{{URL::to('/')}}}/img/peer.png"><br>Review your<br>Peer</a>
+            </div>
+        @endif
 
 
 
