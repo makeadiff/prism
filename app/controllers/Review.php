@@ -13,7 +13,7 @@ class Review extends BaseController
     public function showReviewType()
     {
 
-        return View::make('review-type')->with('manager_status',User::checkIfManager());
+        return View::make('review-type')->with('is_manager',User::checkIfManager())->with('is_bro',User::checkIfBro());
     }
 
     public function showReviewUser($type,$user_id)
