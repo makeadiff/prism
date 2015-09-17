@@ -3,6 +3,8 @@
 class Report extends BaseController
 {
 
+    private static $currentYear = 2015;
+
 
     public function showManagerReport($cycle_id = 3)
     {
@@ -62,7 +64,7 @@ class Report extends BaseController
                 })->get();
 
             foreach($groups as $group) {
-                $users = $group->user()->where('status','=',1)->where('user_type','=','volunteer')->get();
+                $users = $group->user()->where('status','=',1)->where('user_type','=','volunteer')->where('UserGroup.year','=',Report::$currentYear)->get();
 
                 foreach($users as $user) {
 
@@ -107,7 +109,7 @@ class Report extends BaseController
                 })->get();
 
             foreach($groups as $group) {
-                $users = $group->user()->where('status','=',1)->where('user_type','=','volunteer')->get();
+                $users = $group->user()->where('status','=',1)->where('user_type','=','volunteer')->where('UserGroup.year','=',Report::$currentYear)->get();
 
                 foreach($users as $user) {
 

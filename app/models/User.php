@@ -16,7 +16,7 @@ class User extends Eloquent
 
     public function group()
     {
-        return $this->belongsToMany('Group','UserGroup','user_id','group_id');
+        return $this->belongsToMany('Group','UserGroup','user_id','group_id')->withPivot('year');
     }
 
 
