@@ -38,6 +38,7 @@
                     <th>Vertical</th>
                     <th>Completed</th>
                 </tr>
+                <?php $total  = 0; $done = 0 ?>
                     @foreach($verticals as $vertical)
                         <tr>
                             <td><a class = "white" href="#collapse_{{{$vertical->id}}}" data-toggle="collapse"><span class="glyphicon glyphicon-plus"></span>&nbsp;{{{$vertical->name}}}</a>
@@ -48,8 +49,17 @@
                             </div></td>
                             <td>{{{$vertical->done}}}/{{{$vertical->total}}}</td>
                         </tr>
+                    <?php $total+=$vertical->total; $done+=$vertical->done?>
                     @endforeach
+                <tr>
+                    <td>
+                        Total
+                    </td>
+                    <td>
+                        {{$done}}/{{$total}}
+                    </td>
 
+                </tr>
             </table>
         </div>
     </div>
