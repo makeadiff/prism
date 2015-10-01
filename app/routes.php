@@ -18,7 +18,7 @@ Route::filter('login_check',function()
 
 });
 
-Route::filter('360_active',function()
+Route::filter('360_closed',function()
 {
     return Redirect::to('/error')->with('message','MAD 360 review has been closed. Thank you for your inputs');
 
@@ -27,10 +27,10 @@ Route::filter('360_active',function()
 Route::group(array('before'=>'login_check'),function()
 {
     Route::get('/', 'Home@showHome');
-    //Route::get('/review/manager', array('uses'=>'Review@showReview'));
-    Route::get('/review/manager', array('uses'=>'Review@showReview','before' => '360_active'));
-    //Route::get('/review/managee', array('uses'=>'Review@showReview'));
-    Route::get('/review/managee', array('uses'=>'Review@showReview','before'=>'360_active'));
+
+    //Below 2 lines can be commented to enable 360
+    Route::get('/review/manager', array('uses'=>'Review@showReview','before' => '360_closed'));
+    Route::get('/review/managee', array('uses'=>'Review@showReview','before'=>'360_closed'));
 
     Route::get('/review/{type}', 'Review@showReview');
     Route::get('/review-user/{type}/{user_id}','Review@showReviewUser');
