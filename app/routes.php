@@ -32,7 +32,7 @@ Route::group(array('before'=>'login_check'),function()
     //Route::get('/review/managee', array('uses'=>'Review@showReview'));
     Route::get('/review/managee', array('uses'=>'Review@showReview','before'=>'360_active'));
 
-    Route::get('/review/peer', 'Review@showReview');
+    Route::get('/review/{type}', 'Review@showReview');
     Route::get('/review-user/{type}/{user_id}','Review@showReviewUser');
     Route::post('/saveReview','Review@saveReview');
     Route::get('/success','Prism@showSuccess');
