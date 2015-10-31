@@ -6,25 +6,43 @@ class Report extends BaseController
     private static $currentYear = 2015;
 
 
-    public function showManagerReport($cycle_id = 3)
+    public function showManagerReport($cycle = null)
     {
+
+        if(empty($cycle))
+            $cycle = User::getCurrentCycle();
+        else
+            $cycle = Cycle::find($cycle);
+
+
         $cycles = Cycle::all();
 
-        return View::make('report-manager')->with('verticals',$this->getManagerReviewStatus($cycle_id))->with('cycles',$cycles)
-                        ->with('cycle_id',$cycle_id);
+        return View::make('report-manager')->with('verticals',$this->getManagerReviewStatus($cycle->id))->with('cycles',$cycles)
+                        ->with('cycle_id',$cycle->id);
     }
 
-    public function showManageeReport($cycle_id = 3)
+    public function showManageeReport($cycle = null)
     {
+        if(empty($cycle))
+            $cycle = User::getCurrentCycle();
+        else
+            $cycle = Cycle::find($cycle);
+
         $cycles = Cycle::all();
 
-        return View::make('report-managee')->with('verticals',$this->getManageeReviewStatus($cycle_id))->with('cycles',$cycles)
-            ->with('cycle_id',$cycle_id);
+        return View::make('report-managee')->with('verticals',$this->getManageeReviewStatus($cycle->id))->with('cycles',$cycles)
+            ->with('cycle_id',$cycle->id);
     }
 
-    public function showUserReport($cycle_id = 3)
+    public function showUserReport($cycle = null)
     {
-        $cycle = Cycle::find($cycle_id);
+
+        if(empty($cycle))
+            $cycle = User::getCurrentCycle();
+        else
+            $cycle = Cycle::find($cycle);
+
+
         $users = User::getUserDetails();
         foreach ($users as $user) {
             $user->groups = User::getUserGroups($user->id);

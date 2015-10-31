@@ -2,26 +2,26 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href="{{{URL::to('/')}}}">MAD 360</a>
+<a class="navbar-brand" href="{{URL::to('/')}}">MAD 360</a>
 @stop
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2 col-sm-12"</div>
+        <div class="col-md-8 col-md-offset-2 col-sm-12">
         <br>
         <br>
-        <h3 class="sub-title centered">{{{$user->name}}}'s Profile</h3>
+        <h3 class="sub-title centered">{{$user->name}}'s Profile</h3>
         <br>
 
         <div class="col-md-offset-4 col-md-4">
             <select class="form-control" id="cycle">
                 @foreach($cycles as $cycle)
 
-                <option value="{{{$cycle->id}}}"
+                <option value="{{$cycle->id}}"
                 @if($cycle_id == $cycle->id)
                 selected="selected"
                 @endif
-                >{{{$cycle->name}}}</option>
+                >{{$cycle->name}}</option>
 
                 @endforeach
             </select>
@@ -36,11 +36,11 @@
             <tr>
                 <th colspan="3">
                     @if($type == 'managee')
-                        Your Manager's Review (Reviewed by {{{$data[$type]['count']}}} Manager)
+                        Your Manager's Review (Reviewed by {{$data[$type]['count']}} Manager)
                     @elseif($type == 'manager')
-                        Your Managee's Review (Reviewed by {{{$data[$type]['count']}}} Managee)
+                        Your Managee's Review (Reviewed by {{$data[$type]['count']}} Managee)
                     @else
-                        Your Peer's Review (Reviewed by {{{$data[$type]['count']}}} Peer)
+                        Your Peer's Review (Reviewed by {{$data[$type]['count']}} Peer)
                     @endif
                 </th>
             </tr>
@@ -52,6 +52,9 @@
                 <th>
                     Score
                 </th>
+                <th>
+                    Average
+                </th>
                 <th data-hide="all">
                     Comments
                 </th>
@@ -61,15 +64,27 @@
 
                 <?php $questions = $topic->question()->get();?>
                 <tbody>
+                <tr>
+                    <td>
+                        <b>T. {{$topic->subject}}</b>
+                    </td>
+                    <td>
+                        <b>{{$data[$type][$topic->id]['score']}}</b>
+                    </td>
+                    <td>
+                        <b>{{$data[$type][$topic->id]['average']}}</b>
+                    </td>
+                </tr>
 
                 @foreach($questions as $question)
 
                     <tr>
-                        <td>Q. {{{$question->subject}}} </td>
-                        <td>{{{$data[$type][$topic->id][$question->id]['score']}}}</td>
+                        <td>Q. {{$question->subject}} </td>
+                        <td>{{$data[$type][$topic->id][$question->id]['score']}}</td>
+                        <td>{{$data[$type][$topic->id][$question->id]['average']}}</td>
                         <td>
                             @foreach($data[$type][$topic->id][$question->id]['comments'] as $key => $comment)
-                            {{{$key+1}}}. {{{$comment}}}<br>
+                            {{$key+1}}. {{$comment}}<br>
                             @endforeach
                         </td>
                     </tr>
@@ -92,9 +107,9 @@
     $(function() {
         $('#cycle').change(function(){
             @if($source == 'my-profile')
-                var str = "{{{URL::to('/')}}}/my-profile/" + $('#cycle').val();
+                var str = "{{URL::to('/')}}/my-profile/" + $('#cycle').val();
             @else
-                var str = "{{{URL::to('/')}}}/view-profile/" + {{{$user->id}}} + "/" + $('#cycle').val();
+                var str = "{{URL::to('/')}}/view-profile/" + {{$user->id}} + "/" + $('#cycle').val();
             @endif
             window.location = str;
         })

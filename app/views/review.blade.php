@@ -23,7 +23,7 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href="{{{URL::to('/')}}}/">MAD 360</a>
+<a class="navbar-brand" href="{{URL::to('/')}}/">MAD 360</a>
 @stop
 
 
@@ -77,21 +77,21 @@
                 <tbody>
                 @foreach ($users as $user)
                     <tr>
-                        <td><a class="white" href="{{{URL::to('/')}}}/review-user/{{{$type}}}/{{{$user->id}}}">{{{$user->name}}}</a></td>
-                        <td>{{{$user->city}}}</td>
-                        <td>{{{$user->region}}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><a class="white" href="{{URL::to('/')}}/review-user/{{$type}}/{{$user->id}}">{{$user->name}}</a></td>
+                        <td>{{$user->city}}</td>
+                        <td>{{$user->region}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             @foreach($user->groups as $group)
-                                {{{$group}}}
+                                {{$group}}
                             @endforeach
                         </td>
-                        <td>{{{$user->status}}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>{{$user->status}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             @foreach($user->reviewers as $key => $reviewer)
                                 @if($key!=0)
                                     ,
                                 @endif
-                                {{{$reviewer}}}
+                                {{$reviewer}}
                             @endforeach
                         </td>
                     </tr>

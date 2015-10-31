@@ -2,7 +2,9 @@
 
 class Profile extends BaseController
 {
-    public function showMyProfile($cycle = 2)
+
+
+    public function showMyProfile($cycle = null)
     {
         if(empty($cycle))
             $cycle = User::getCurrentCycle();
@@ -23,7 +25,51 @@ class Profile extends BaseController
                     ->with('cycles',$cycles)->with('cycle_id',$cycle->id)->with('user',$user)->with('source','my-profile');
     }
 
-    public function showViewProfile($user_id, $cycle = 2) {
+    public function showProfileMaterial($cycle = null)
+    {
+
+        if(empty($cycle))
+            $cycle = User::getCurrentCycle();
+        else
+            $cycle = Cycle::find($cycle);
+
+        $user = User::find($_SESSION['user_id']);
+
+        $data = $this->getScore($user,$cycle);
+
+        $topics = Topic::all();
+
+        $types = array('managee','manager','peer');
+
+        $cycles = Cycle::all();
+
+        $tab = $this->checkIfReviewEmpty($user, $cycle,$types); //To check whether to disable the review type tab
+
+        return View::make('profile-material')->with('data',$data)->with('topics',$topics)->with('types',$types)
+            ->with('cycles',$cycles)->with('cycle_id',$cycle->id)->with('user',$user)->with('source','my-profile')->with('tab',$tab);
+
+    }
+
+
+
+    function checkIfReviewEmpty($user,$cycle,$types) {
+        foreach($types as $type) {
+            if(empty($user->answer()->where('question_id',1)->wherePivot('created_at','>=',$cycle->start_date)
+                ->wherePivot('created_at','<=',$cycle->end_date)->where('type',$type)->avg('level'))) {
+                $tab[$type]['disabled'] = 'disabled';
+                $tab[$type]['active'] = '';
+            }
+            else {
+                $tab[$type]['disabled'] = '';
+                $tab[$type]['active'] = 'active';
+            }
+
+        }
+
+        return $tab;
+    }
+
+    public function showViewProfile($user_id, $cycle = null) {
 
         if(empty($cycle))
             $cycle = User::getCurrentCycle();
@@ -170,24 +216,31 @@ class Profile extends BaseController
         $topics = Topic::all();
         $types = array('manager','managee','peer');
 
+
         foreach($types as $key => $type) {
+
+
+
 
             $data[$type]['count'] = $user->answer()->wherePivot('created_at','>=',$cycle->start_date)
                 ->wherePivot('created_at','<=',$cycle->end_date)->where('type',$type)->count() / 7;
+
+
 
             foreach($topics as $topic) {
                 $score[$topic->id] = array();
                 $questions = $topic->question()->get();
 
+                $data[$type][$topic->id]['score'] = round($topic->getUserScore($user->id,$type,$cycle),1);
 
+                $data[$type][$topic->id]['average'] = round($topic->getAverageScore($type,$user->getUserType(),$cycle),1);
 
                 foreach($questions as $question) {
 
+                    $data[$type][$topic->id][$question->id]['score'] = round($user->answer()->where('question_id',$question->id)->wherePivot('created_at','>=',$cycle->start_date)
+                        ->wherePivot('created_at','<=',$cycle->end_date)->where('type',$type)->avg('level'),1);
 
-                    $data[$type][$topic->id][$question->id]['score'] = $user->answer()->where('question_id',$question->id)->wherePivot('created_at','>=',$cycle->start_date)
-                        ->wherePivot('created_at','<=',$cycle->end_date)->where('type',$type)->avg('level');
-
-
+                    $data[$type][$topic->id][$question->id]['average'] = round($question->getAverageScore($type,$user->getUserType(),$cycle),1);
 
                     $answers = $user->answer()->where('question_id',$question->id)->wherePivot('created_at','>=',$cycle->start_date)
                         ->wherePivot('created_at','<=',$cycle->end_date)->where('type',$type)->wherePivot('comment','<>','')->get();

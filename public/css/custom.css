@@ -60,6 +60,8 @@ h4.sub-title
     color:white;
 }
 
+
+
 p.success
 {
     font-family: sans-serif;
@@ -96,11 +98,17 @@ p.sub-text{
 }
 
 
-table
+.table
 {
     color:#ffffff;
 
 }
+
+.box{
+    padding : 5px;
+}
+
+
 
 div.oneTravelDetail
 {

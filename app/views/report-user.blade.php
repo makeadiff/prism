@@ -23,7 +23,7 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href="{{{URL::to('/')}}}/">MAD 360</a>
+<a class="navbar-brand" href="{{URL::to('/')}}/">MAD 360</a>
 @stop
 
 
@@ -41,11 +41,11 @@
                 <select class="form-control" id="cycle">
                     @foreach($cycles as $cycle)
 
-                    <option value="{{{$cycle->id}}}"
+                    <option value="{{$cycle->id}}"
                     @if($cycle_id == $cycle->id)
                     selected="selected"
                     @endif
-                    >{{{$cycle->name}}}</option>
+                    >{{$cycle->name}}</option>
 
                     @endforeach
                 </select>
@@ -77,23 +77,23 @@
                 <tbody>
                 @foreach ($users as $user)
                     <tr>
-                        <td>{{{$user->name}}}</td>
-                        <td>{{{$user->city}}}</td>
-                        <td>{{{$user->region}}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->city}}</td>
+                        <td>{{$user->region}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             @foreach($user->groups as $group)
-                                {{{$group}}}
+                                {{$group}}
                             @endforeach
                         </td>
-                        <td>{{{$user->manager_review_status}}}</td>
-                        <td>{{{$user->managee_review_status}}}</td>
-                        <td>{{{$user->peer_review_status}}}</td>
+                        <td>{{$user->manager_review_status}}</td>
+                        <td>{{$user->managee_review_status}}</td>
+                        <td>{{$user->peer_review_status}}</td>
                         <td>
                             @foreach($user->managers as $key => $manager)
                                 @if($key!=0)
                                     ,
                                 @endif
-                                {{{$manager}}}
+                                {{$manager}}
                             @endforeach
                         </td>
                         <td>
@@ -101,7 +101,7 @@
                             @if($key!=0)
                             ,
                             @endif
-                            {{{$managee}}}
+                            {{$managee}}
                             @endforeach
                         </td>
                         <td>
@@ -109,7 +109,7 @@
                             @if($key!=0)
                             ,
                             @endif
-                            {{{$peer}}}
+                            {{$peer}}
                             @endforeach
                         </td>
                     </tr>
@@ -133,7 +133,7 @@
 <script type="text/javascript">
     $(function() {
         $('#cycle').change(function(){
-            var str = "{{{URL::to('/')}}}/report/user/" + $('#cycle').val();
+            var str = "{{URL::to('/')}}/report/user/" + $('#cycle').val();
             window.location = str;
         })
     });

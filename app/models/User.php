@@ -4,6 +4,8 @@ class User extends Eloquent
 {
     protected $table = 'User';
 
+    private static $currentYear = 2015;
+
     public function answer()
     {
         return $this->belongsToMany('Answer','prism_answer_user')->withPivot('reviewer_id','type','comment')->withTimestamps();
@@ -165,6 +167,28 @@ class User extends Eloquent
         }
 
         return false;
+    }
+
+    public function getUserType()
+    {
+        $groups = $this->group()->wherePivot('year',User::$currentYear)->get();
+
+        foreach($groups as $group) {
+            if($group->type == 'national')
+                return 'national';
+        }
+
+        foreach($groups as $group) {
+            if($group->type == 'strat')
+                return 'strat';
+        }
+
+        foreach($groups as $group) {
+            if($group->type == 'national')
+                return 'fellow';
+        }
+
+        return 'volunteer';
     }
 
 

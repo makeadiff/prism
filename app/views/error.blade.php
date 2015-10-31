@@ -2,7 +2,7 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href="{{{URL::to('/')}}}">MAD 360</a>
+<a class="navbar-brand" href="{{URL::to('/')}}">MAD 360</a>
 @stop
 
 

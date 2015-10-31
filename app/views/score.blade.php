@@ -2,7 +2,7 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href="{{{URL::to('/')}}}">MAD 360</a>
+<a class="navbar-brand" href="{{URL::to('/')}}">MAD 360</a>
 @stop
 
 
@@ -20,14 +20,14 @@
                 <tr>
                     <th colspan="2" rowspan="2">Region</th>
                     @foreach($verticals as $vertical)
-                    <th colspan="2">{{{$vertical->name}}}</th>
+                    <th colspan="2">{{$vertical->name}}</th>
                     @endforeach
                 </tr>
                 <tr>
 
                     @foreach($verticals as $vertical)
                     @foreach($topics as $topic)
-                    <th>{{{substr($topic->subject,0,1)}}}</th>
+                    <th>{{substr($topic->subject,0,1)}}</th>
                     @endforeach
                     @endforeach
 
@@ -35,7 +35,7 @@
 
                 @foreach($regions as $region)
                 <tr>
-                    <td colspan="2">{{{$region->name}}}</td>
+                    <td colspan="2">{{$region->name}}</td>
 
 
 
@@ -62,7 +62,7 @@
 
                     @endif
                     @endforeach
-                    <td>{{{round($region_score,1)}}}</td>
+                    <td>{{round($region_score,1)}}</td>
                     @endforeach
 
 
@@ -83,14 +83,14 @@
                 <tr>
                     <th colspan="2" rowspan="2">City</th>
                     @foreach($verticals as $vertical)
-                        <th colspan="2">{{{$vertical->name}}}</th>
+                        <th colspan="2">{{$vertical->name}}</th>
                     @endforeach
                 </tr>
                 <tr>
 
                     @foreach($verticals as $vertical)
                         @foreach($topics as $topic)
-                            <th>{{{substr($topic->subject,0,1)}}}</th>
+                            <th>{{substr($topic->subject,0,1)}}</th>
                         @endforeach
                     @endforeach
                     <th>Total</th>
@@ -99,7 +99,7 @@
 
                 @foreach($cities as $city)
                     <tr>
-                    <td colspan="2">{{{$city->name}}}</td>
+                    <td colspan="2">{{$city->name}}</td>
                     <?php
                     $city_score = 0;
                     $city_total = 0;
@@ -108,7 +108,7 @@
                     @foreach($verticals as $vertical)
                         @foreach($topics as $topic)
                             @if(isset($vertical_score[$vertical->id][$city->id][$topic->id]['score']))
-                                <td>{{{round($vertical_score[$vertical->id][$city->id][$topic->id]['score'],1)}}}</td>
+                                <td>{{round($vertical_score[$vertical->id][$city->id][$topic->id]['score'],1)}}</td>
                                 <?php
                                 if($vertical_score[$vertical->id][$city->id][$topic->id]['score'] != 0) {
                                     $city_total += $vertical_score[$vertical->id][$city->id][$topic->id]['score'];
@@ -121,7 +121,7 @@
                             @endif
                         @endforeach
                     @endforeach
-                        <td>{{{round($city_score,1)}}}</td>
+                        <td>{{round($city_score,1)}}</td>
                     </tr>
                 @endforeach
 

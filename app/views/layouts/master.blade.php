@@ -1,17 +1,17 @@
 <html>
 <head>
-    <link href="{{{URL::to('/')}}}/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{{URL::to('/')}}}/css/footable.core.css" rel="stylesheet" type="text/css">
-    <link href="{{{URL::to('/')}}}/css/custom.css" rel="stylesheet">
+    <link href="{{URL::to('/')}}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{URL::to('/')}}/css/footable.core.css" rel="stylesheet" type="text/css">
+    <link href="{{URL::to('/')}}/css/custom.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <script src="{{{URL::to('/')}}}/js/jquery-1.9.0.js"></script>
-    <script src="{{{URL::to('/')}}}/js/bootstrap.min.js"></script>
-    <script src="{{{URL::to('/')}}}/js/footable.min.js"></script>
-    <script src="{{{URL::to('/')}}}/js/footable.filter.min.js"></script>
-    <script src="{{{URL::to('/')}}}/js/footable.paginate.min.js"></script>
-    <script src="{{{URL::to('/')}}}/js/footable.sort.min.js"></script>
-    <script src="{{{URL::to('/')}}}/js/uservoice.js"></script>
+    <script src="{{URL::to('/')}}/js/jquery-1.9.0.js"></script>
+    <script src="{{URL::to('/')}}/js/bootstrap.min.js"></script>
+    <script src="{{URL::to('/')}}/js/footable.min.js"></script>
+    <script src="{{URL::to('/')}}/js/footable.filter.min.js"></script>
+    <script src="{{URL::to('/')}}/js/footable.paginate.min.js"></script>
+    <script src="{{URL::to('/')}}/js/footable.sort.min.js"></script>
+    <script src="{{URL::to('/')}}/js/uservoice.js"></script>
     <title>MADApp :: Prism</title>
     <script type="text/javascript">
         $(function () {
@@ -66,14 +66,14 @@
             <span class="icon-bar"></span>
         </button>
         @section('navbar-header')
-        <a class="navbar-brand" href="{{{URL::to('/')}}}/../../../madapp/index.php/dashboard/dashboard_view">MADApp</a>
+        <a class="navbar-brand" href="{{URL::to('/')}}/../../../madapp/index.php/dashboard/dashboard_view">MADApp</a>
         @show
     </div>
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
         <ul class="nav navbar-nav">
             @section('navbar-links')
-            <li><a href="{{{URL::to('/')}}}/review-type">Review</a></li>
-            <li><a href="{{{URL::to('/')}}}/report-type">Report</a></li>
+            <li><a href="{{URL::to('/')}}/review-type">Review</a></li>
+            <li><a href="{{URL::to('/')}}/report-type">Report</a></li>
 
             @show
         </ul>

@@ -23,7 +23,7 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href="{{{URL::to('/')}}}/">MAD 360</a>
+<a class="navbar-brand" href="{{URL::to('/')}}/">MAD 360</a>
 @stop
 
 
@@ -58,12 +58,12 @@
                 <tbody>
                 @foreach ($users as $user)
                 <tr>
-                    <td><a class="white" href="{{{URL::to('/')}}}/view-profile/{{{$user->id}}}"> {{{$user->name}}}</a></td>
-                    <td>{{{$user->city}}}</td>
+                    <td><a class="white" href="{{URL::to('/')}}/view-profile/{{$user->id}}"> {{$user->name}}</a></td>
+                    <td>{{$user->city}}</td>
 
                     <td>
                         @foreach($user->groups as $group)
-                        {{{$group}}}
+                        {{$group}}
                         @endforeach
                     </td>
 

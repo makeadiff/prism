@@ -2,7 +2,7 @@
 
 @section('body')
 @section('navbar-header')
-<a class="navbar-brand" href="{{{URL::to('/')}}}">MAD 360</a>
+<a class="navbar-brand" href="{{URL::to('/')}}">MAD 360</a>
 @stop
 
 <div class="container-fluid">
@@ -13,19 +13,19 @@
         <br>
 
         <div class="col-md-4 col-sm-6 text-center">
-            <a href="{{{URL::to('/')}}}/review/manager" class='btn btn-primary btn-dash '><img class="dash" src="{{{URL::to('/')}}}/img/manager.png"><br>Review your<br>Manager</a>
+            <a href="{{URL::to('/')}}/review/manager" class='btn btn-primary btn-dash '><img class="dash" src="{{URL::to('/')}}/img/manager.png"><br>Review your<br>Manager</a>
         </div>
 
 
         @if($is_manager == true)
             <div class="col-md-4 col-sm-6 text-center">
-                <a href="{{{URL::to('/')}}}/review/managee" class='btn btn-primary btn-dash '><img class="dash" src="{{{URL::to('/')}}}/img/managee.png"><br>Review your<br>Managee</a>
+                <a href="{{URL::to('/')}}/review/managee" class='btn btn-primary btn-dash '><img class="dash" src="{{URL::to('/')}}/img/managee.png"><br>Review your<br>Managee</a>
             </div>
         @endif
 
         @if($is_bro == true)
             <div class="col-md-4 col-sm-6 text-center">
-                <a href="{{{URL::to('/')}}}/review/peer" class='btn btn-primary btn-dash '><img class="dash" src="{{{URL::to('/')}}}/img/peer.png"><br>Review your<br>Peer</a>
+                <a href="{{URL::to('/')}}/review/peer" class='btn btn-primary btn-dash '><img class="dash" src="{{URL::to('/')}}/img/peer.png"><br>Review your<br>Peer</a>
             </div>
         @endif
 
