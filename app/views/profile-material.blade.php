@@ -101,7 +101,17 @@
                                         <tr>
                                             <th class="first">Question</th>
                                             <th>Your Rating</th>
-                                            <th class="last">Average</th>
+                                            <th class="last">
+                                                @if($user->getUserType() == 'national')
+                                                    Bro Average
+                                                @elseif($user->getUserType() == 'strat')
+                                                    Strat Average
+                                                @elseif($user->getUserType() == 'fellow')
+                                                    Multiplier Average
+                                                @else
+                                                    Average
+                                                @endif
+                                            </th>
                                         </tr>
 
                                         </thead>
