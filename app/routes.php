@@ -50,7 +50,7 @@ Route::group(array('before'=>'login_check'),function()
     Route::get('/my-profile/{cycle_id?}','Profile@showMyProfile');
     Route::get('/select-profile/','Profile@showselectProfile');
     Route::get('/view-profile/{user_id}/{cycle_id?}','Profile@showViewProfile');
-    Route::get('/profile-material', 'Profile@showProfileMaterial');
+    Route::get('/my-growth-project-profile', 'Profile@showProfileMaterial');
 
 });
 

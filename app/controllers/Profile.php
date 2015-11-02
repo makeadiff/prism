@@ -239,8 +239,20 @@ class Profile extends BaseController
 
         $cycles = Cycle::all();
 
-        return View::make('profile')->with('data',$data)->with('topics',$topics)->with('types',$types)
-                    ->with('cycles',$cycles)->with('cycle_id',$cycle->id)->with('user',$user)->with('source','view-profile');
+        $tab = $this->checkIfReviewEmpty($user, $cycle,$types); //To check whether to disable the review type tab
+
+        $percentile__strings = $this->getPercentileStrings($user,$cycle,$types,$topics);
+
+        $hi_city_data = $this->getHIAggregateForCity($user);
+
+        $hi_national_data = $this->getHIAggregateForNational();
+
+        $hi_questions = $this->getHIQuestions();
+
+        return View::make('profile-material')->with('data',$data)->with('topics',$topics)->with('types',$types)
+            ->with('cycles',$cycles)->with('cycle_id',$cycle->id)->with('user',$user)->with('source','my-profile')
+            ->with('tab',$tab)->with('percentile_strings',$percentile__strings)->with('hi_city_data',$hi_city_data)
+            ->with('hi_questions',$hi_questions)->with('hi_national_data',$hi_national_data);
 
 
 

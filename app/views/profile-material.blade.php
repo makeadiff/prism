@@ -2,13 +2,13 @@
 <head>
     <title>Backathon</title>
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="css/custom.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{{URL::to('/')}}/css/materialize.min.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{{URL::to('/')}}/css/custom.css" media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{{--
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">--}}
     @yield('head')
 </head>
 
@@ -203,7 +203,7 @@
 </div>
 </div>
 <script src="{{URL::to('/')}}/js/jquery-1.9.0.js"></script>
-<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="{{URL::to('/')}}/js/materialize.min.js"></script>
 <script src="{{URL::to('/')}}/js/highcharts.js"></script>
 <script>
     var chart_data = <?php echo json_encode($data)?>;
