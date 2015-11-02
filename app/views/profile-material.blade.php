@@ -45,9 +45,9 @@
                     <br>
                     <h5 class="center-align">
                         @if($type == 'managee')
-                            Review by Managees
+                            Review by Manager
                         @elseif($type == 'manager')
-                            Review by Managers
+                            Review by Managee
                         @else
                             Review by Peers
                         @endif
