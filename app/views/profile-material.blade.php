@@ -73,7 +73,7 @@
 
                                 @if($topic->subject == "Integrity")
                                     <p>To learn more about Integrity check the following : </p>
-                                    <a target="_blank" href="resources/Integrity: Without it Nothing Works.pdf">Integrity: Without it Nothing Works (Interview) (SSRN)</a><br>
+                                    <a target="_blank" href="resources/Integrity: Without it Nothing Works.pdf">Integrity: Without it Nothing Works (Interview) (PDF) (SSRN)</a><br>
                                     <a target="_blank" href="http://papers.ssrn.com/sol3/papers.cfm?abstract_id=1542759">Integrity: A Positive Model (Research Paper) (SSRN)</a><br>
                                     <a target="_blank" href="https://docs.google.com/presentation/d/1UgQdAw5dpsXvtkNBMbSxHi63hOyBFfP3qrzNX4qfyYg/edit#slide=id.g5226a6a56_0_31">Integrity: LC Presentation</a><br>
                                 @else
@@ -86,6 +86,19 @@
                         </div>
 
                     @endforeach
+
+                    <br>
+
+                    <h5 class="center-align">
+                        @if($type == 'managee')
+                            Review by Manager (Details)
+                        @elseif($type == 'manager')
+                            Review by Managee (Details)
+                        @else
+                            Review by Peers (Details)
+                        @endif
+                    </h5>
+                    <div class="underline"></div>
 
                     <br>
 
