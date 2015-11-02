@@ -91,11 +91,26 @@
 
                     <h5 class="center-align">
                         @if($type == 'managee')
-                            Review by Managers (Details)
+                            Reviewed by {{$data[$type]['count']}}
+                            @if($data[$type]['count'] > 1)
+                                Managers (Details)
+                            @else
+                                Manager (Details)
+                            @endif
                         @elseif($type == 'manager')
-                            Review by Managees (Details)
+                            Reviewed by {{$data[$type]['count']}}
+                            @if($data[$type]['count'] > 1)
+                                Managees (Details)
+                            @else
+                                Managee (Details)
+                            @endif
                         @else
-                            Review by Peers (Details)
+                            Reviewed by {{$data[$type]['count']}}
+                            @if($data[$type]['count'] > 1)
+                                Peers (Details)
+                            @else
+                                Peer (Details)
+                            @endif
                         @endif
                     </h5>
                     <div class="underline"></div>
@@ -107,7 +122,7 @@
                             <?php $questions = $topic->question()->get();?>
                             <li>
                                 <div class="collapsible-header"><i
-                                            class="material-icons">list</i>{{$topic->subject}}</div>
+                                            class="material-icons">list</i>{{$topic->subject}} (Click to expand)</div>
                                 <div class="collapsible-body box">
                                     <table class="heat-map">
                                         <thead>
