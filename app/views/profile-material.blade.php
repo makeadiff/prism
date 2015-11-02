@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Backathon</title>
+    <title>Growth Project</title>
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="{{URL::to('/')}}/css/materialize.min.css" media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="{{URL::to('/')}}/css/custom.css" media="screen,projection"/>
