@@ -58,7 +58,7 @@
                 <tbody>
                 @foreach ($users as $user)
                 <tr>
-                    <td><a class="white" target="_blank" href="{{URL::to('/')}}/view-profile/{{$user->id}}"> {{$user->name}}</a></td>
+                    <td><a class="white" target="_blank" href="{{URL::to('/')}}/view-profile/{{Crypt::encrypt($user->id)}}"> {{$user->name}}</a></td>
                     <td>{{$user->city}}</td>
 
                     <td>

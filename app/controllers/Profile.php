@@ -222,12 +222,18 @@ class Profile extends BaseController
         return $tab;
     }
 
-    public function showViewProfile($user_id, $cycle = null) {
+    public function showViewProfile($encrypted_user_id, $cycle = null) {
 
         if(empty($cycle))
             $cycle = User::getCurrentCycle();
         else
             $cycle = Cycle::find($cycle);
+
+        try {
+            $user_id = Crypt::decrypt($encrypted_user_id);
+        }catch(Exception $e){
+            return Redirect::to('error')->with('message',"Invalid profile id");
+        }
 
         $user = User::find($user_id);
 
