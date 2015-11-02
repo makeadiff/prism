@@ -184,7 +184,7 @@ class User extends Eloquent
         }
 
         foreach($groups as $group) {
-            if($group->type == 'national')
+            if($group->type == 'fellow')
                 return 'fellow';
         }
 

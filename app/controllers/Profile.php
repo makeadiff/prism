@@ -45,8 +45,161 @@ class Profile extends BaseController
 
         $tab = $this->checkIfReviewEmpty($user, $cycle,$types); //To check whether to disable the review type tab
 
+        $percentile__strings = $this->getPercentileStrings($user,$cycle,$types,$topics);
+
+        $hi_city_data = $this->getHIAggregateForCity($user);
+
+        $hi_national_data = $this->getHIAggregateForNational();
+
+        $hi_questions = $this->getHIQuestions();
+
         return View::make('profile-material')->with('data',$data)->with('topics',$topics)->with('types',$types)
-            ->with('cycles',$cycles)->with('cycle_id',$cycle->id)->with('user',$user)->with('source','my-profile')->with('tab',$tab);
+            ->with('cycles',$cycles)->with('cycle_id',$cycle->id)->with('user',$user)->with('source','my-profile')
+            ->with('tab',$tab)->with('percentile_strings',$percentile__strings)->with('hi_city_data',$hi_city_data)
+            ->with('hi_questions',$hi_questions)->with('hi_national_data',$hi_national_data);
+
+    }
+
+    function getHIQuestions() {
+        $data = DB::select("SELECT * FROM SS_Question WHERE status = '1'");
+
+        return $data;
+    }
+
+
+    function getHIAggregateForCity($user) {
+        $survey_event_id = DB::select("SELECT id FROM SS_Survey_Event ORDER BY added_on DESC LIMIT 0,1")[0]->id; // Default Survey event.
+        $city_id	= $user->city()->first()->id;
+        $data 		= array();
+        $total_responders = 0;
+
+        $raw_data = DB::select("SELECT DISTINCT UA.user_id as user_id, UA.question_id as question_id, UA.answer as answer FROM SS_UserAnswer UA
+			INNER JOIN User U ON U.id=UA.user_id
+			WHERE U.status='1' AND U.user_type='volunteer' AND U.city_id = ? AND UA.survey_event_id= ?",array($city_id,$survey_event_id));
+
+        $answers = array();
+
+        $total_responders = DB::select("SELECT COUNT(DISTINCT UA.user_id) AS count FROM SS_UserAnswer UA
+			INNER JOIN User U ON U.id=UA.user_id
+			WHERE U.status='1' AND U.user_type='volunteer' AND U.city_id= ? AND UA.survey_event_id= ?",array($city_id,$survey_event_id))[0]->count;
+
+        // Lifted from controllers/parameter.php:ss_calulate()
+        foreach ($raw_data as $ans) {
+            // If not defined, define the defaults
+            if(!isset($answers[$ans->question_id])) $answers[$ans->question_id] = array(0=>0, 1=>0, 3=>0, 5=>0);
+
+            $answers[$ans->question_id][$ans->answer]++;
+        }
+
+        foreach ($answers as $question_id => $values) {
+            // Find level by aggregating the total and averaging.
+            // If there are 5 answers - 1 x Level 1, 2 x Level 3 and 2 x Level 5, we aggregate it - (1 x 1) + (2 x 3) + (2 x 5) = 17
+            //	Then we divide by total count : 17/5 = 3.4. Rounds to 3. Thats the level.
+            $aggregate = 0;
+            $total_answer_count = 0;
+            $data[$question_id] = array();
+
+            $total_answer_count = $values[1] + $values[3] + $values[5];
+
+            foreach(array(1,3,5) as $answer_value) {
+                $aggregate += $answer_value * $values[$answer_value];
+
+
+                $data[$question_id]['level'][$answer_value] = $values[$answer_value];
+                if($total_answer_count)
+                    $data[$question_id]['level_percentage'][$answer_value] = round((($values[$answer_value] / $total_answer_count) * 100), 2);
+                else $data[$question_id]['level_percentage'][$answer_value] = 0;
+            }
+            if($total_answer_count) $level = round($aggregate / $total_answer_count, 1);
+            else $level = 0;
+
+            $data[$question_id]['aggregate_level'] = $level;
+            $data[$question_id]['total_answer_count'] = $total_responders;
+        }
+
+
+        return $data;
+    }
+
+
+    function getHIAggregateForNational() {
+        $survey_event_id = DB::select("SELECT id FROM SS_Survey_Event ORDER BY added_on DESC LIMIT 0,1")[0]->id; // Default Survey event.
+        $data 		= array();
+        $total_responders = 0;
+
+        $raw_data = DB::select("SELECT DISTINCT UA.user_id as user_id, UA.question_id as question_id, UA.answer as answer FROM SS_UserAnswer UA
+			INNER JOIN User U ON U.id=UA.user_id
+			WHERE U.status='1' AND U.user_type='volunteer' AND UA.survey_event_id= ?",array($survey_event_id));
+
+        $answers = array();
+
+        $total_responders = DB::select("SELECT COUNT(DISTINCT UA.user_id) AS count FROM SS_UserAnswer UA
+			INNER JOIN User U ON U.id=UA.user_id
+			WHERE U.status='1' AND U.user_type='volunteer' AND UA.survey_event_id= ?",array($survey_event_id))[0]->count;
+
+        // Lifted from controllers/parameter.php:ss_calulate()
+        foreach ($raw_data as $ans) {
+            // If not defined, define the defaults
+            if(!isset($answers[$ans->question_id])) $answers[$ans->question_id] = array(0=>0, 1=>0, 3=>0, 5=>0);
+
+            $answers[$ans->question_id][$ans->answer]++;
+        }
+
+        foreach ($answers as $question_id => $values) {
+            // Find level by aggregating the total and averaging.
+            // If there are 5 answers - 1 x Level 1, 2 x Level 3 and 2 x Level 5, we aggregate it - (1 x 1) + (2 x 3) + (2 x 5) = 17
+            //	Then we divide by total count : 17/5 = 3.4. Rounds to 3. Thats the level.
+            $aggregate = 0;
+            $total_answer_count = 0;
+            $data[$question_id] = array();
+
+            $total_answer_count = $values[1] + $values[3] + $values[5];
+
+            foreach(array(1,3,5) as $answer_value) {
+                $aggregate += $answer_value * $values[$answer_value];
+
+
+                $data[$question_id]['level'][$answer_value] = $values[$answer_value];
+                if($total_answer_count)
+                    $data[$question_id]['level_percentage'][$answer_value] = round((($values[$answer_value] / $total_answer_count) * 100), 2);
+                else $data[$question_id]['level_percentage'][$answer_value] = 0;
+            }
+            if($total_answer_count) $level = round($aggregate / $total_answer_count, 1);
+            else $level = 0;
+
+            $data[$question_id]['aggregate_level'] = $level;
+            $data[$question_id]['total_answer_count'] = $total_responders;
+        }
+
+
+        return $data;
+    }
+
+    function getPercentileStrings($user,$cycle,$types,$topics) {
+
+        foreach($types as $type) {
+            foreach($topics as $topic) {
+
+                $percentile = $topic->getPercentile($user,$type,$cycle);
+
+                if($percentile >= 90) {
+                    $percentile_string = "top 10%";
+                }elseif($percentile < 90 && $percentile >= 75) {
+                    $percentile_string = "top 25%";
+                }elseif($percentile <75 && $percentile >= 50) {
+                    $percentile_string = "top 50%";
+                }elseif($percentile < 50) {
+                    $percentile_string = "bottom 50%";
+                }else{
+                    $percentile_string = "N/A";
+                }
+
+                $percentile_strings[$type][$topic->id] = $percentile_string;
+            }
+        }
+
+        return $percentile_strings;
+
 
     }
 

@@ -32,6 +32,43 @@ class Topic extends Eloquent
 
     }
 
+    public function getPercentile($user,$review_type,$cycle) {
+
+        $rank_list = DB::select("SELECT User.id as user_id,User.name as user_name,AVG(prism_answers.level) as user_average FROM prism_answer_user
+                            INNER JOIN prism_answers
+                            ON prism_answers.id = prism_answer_user.answer_id
+                            INNER JOIN prism_questions
+                            ON prism_answers.question_id = prism_questions.id
+                            INNER JOIN prism_topics
+                            ON prism_questions.topic_id = prism_topics.id
+                            INNER JOIN User
+                            ON User.id = prism_answer_user.user_id
+                            INNER JOIN UserGroup
+                            ON UserGroup.user_id = User.id
+                            INNER JOIN `Group`
+                            ON `Group`.id = UserGroup.group_id
+                            WHERE prism_answer_user.type = ? AND `Group`.type = ?
+                            AND prism_answer_user.created_at >= ? AND prism_answer_user.created_at <= ?
+                            AND UserGroup.year = ? AND prism_topics.id = ?
+                            GROUP BY User.id
+                            ORDER BY user_average ASC
+                            ",array($review_type,$user->getUserType(),$cycle->start_date,$cycle->end_date,date("Y"),$this->id));
+
+        $list_length = count($rank_list);
+
+        foreach ($rank_list as $index => $item) {
+
+            if($item->user_id == $user->id) {
+
+                $percentile = ($index*100)/$list_length;
+                return $percentile;
+            }
+
+        }
+
+        return null;
+    }
+
     public function getAverageScore($review_type, $user_type, $cycle)
     {
 
