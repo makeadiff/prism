@@ -185,7 +185,7 @@
 
             <div id="hi">
                 <div class="card">
-                    <div class="card-content white-text">
+                    <div class="card-content">
                         <table class="heat-map">
                             <thead>
                             <tr>
