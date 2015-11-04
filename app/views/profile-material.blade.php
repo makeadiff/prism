@@ -63,13 +63,13 @@
                             </div>
                             <div class="card-content">
                             <span class="card-title activator grey-text text-darken-4">{{$topic->subject}}<i
-                                        class="material-icons right">more_vert</i></span>
+                                        class="material-icons right color-dark-primary-text">more_vert</i></span>
 
                                 <div id="chart-{{$type}}-{{str_replace(' ', '-', $topic->subject)}}"></div>
                             </div>
                             <div class="card-reveal">
                                 <span class="card-title grey-text text-darken-4">{{$topic->subject}}<i
-                                            class="material-icons right">close</i></span>
+                                            class="material-icons right color-dark-primary-text">close</i></span>
 
                                 @if($topic->subject == "Integrity")
                                     <p>To learn more about Integrity check the following : </p>
@@ -122,7 +122,7 @@
                             <?php $questions = $topic->question()->get();?>
                             <li>
                                 <div class="collapsible-header"><i
-                                            class="material-icons">list</i>{{$topic->subject}} (Click to expand)</div>
+                                            class="material-icons color-dark-primary-text">list</i>{{$topic->subject}} (Click to expand)</div>
                                 <div class="collapsible-body box">
                                     <table class="heat-map">
                                         <thead>
