@@ -55,7 +55,7 @@ class Report extends BaseController
 
         }
 
-        return View::make('report-user')->with('users',$users)->with('cycle_id',$cycle_id)->with('cycles',Cycle::all());
+        return View::make('report-user')->with('users',$users)->with('cycle_id',$cycle->id)->with('cycles',Cycle::all());
 
 
     }
