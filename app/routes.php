@@ -29,7 +29,7 @@ Route::group(array('before'=>'login_check'),function()
     Route::get('/', 'Home@showHome');
 
     //Below 2 lines can be commented to enable 360
-    Route::get('/review/manager', array('uses'=>'Review@showReview','before' => '360_closed'));
+    //Route::get('/review/manager', array('uses'=>'Review@showReview','before' => '360_closed'));
     Route::get('/review/managee', array('uses'=>'Review@showReview','before'=>'360_closed'));
 
     Route::get('/review/{type}', 'Review@showReview');
