@@ -62,8 +62,9 @@ class Report extends BaseController
 
     public function showReportType()
     {
+        $user = User::find($_SESSION['user_id']);
 
-        return View::make('report-type');
+        return View::make('report-type')->with('user',$user);
     }
 
     public function getManagerReviewStatus($cycle_id)

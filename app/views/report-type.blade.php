@@ -20,10 +20,11 @@
             <a href="{{URL::to('/')}}/report/managee" class='btn btn-primary btn-dash '><img class="dash" src="{{URL::to('/')}}/img/managee.png"><br>Managee<br>Review Report</a>
         </div>
 
-        <div class="col-md-4 col-sm-6 text-center">
-            <a href="{{URL::to('/')}}/report/user" class='btn btn-primary btn-dash '><img class="dash" src="{{URL::to('/')}}/img/peer.png"><br>User Report</a>
-        </div>
-
+        @if($user->getUserType() == 'national' || $user->getUserType() == 'strat')
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href="{{URL::to('/')}}/report/user" class='btn btn-primary btn-dash '><img class="dash" src="{{URL::to('/')}}/img/peer.png"><br>User Report</a>
+            </div>
+        @endif
 
 
     </div>
